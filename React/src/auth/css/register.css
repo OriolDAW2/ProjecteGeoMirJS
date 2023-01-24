@@ -1,7 +1,7 @@
 
-.form-login {
+.form-login-r {
     width: 400px;
-    height: 270px;
+    height: 420px;
     background: #4e4d4d;
     margin: auto;
     box-shadow: 7px 13px 37px #000;
@@ -52,4 +52,13 @@
   
   .form-login a:hover {
     text-decoration: underline;
+  }
+
+  .errors {
+    margin-bottom: 15px;
+    background-color: rgba(153, 66, 66, 0.746);
+    border-radius: 10px;
+    border: 2px solid red;
+    color: white;
+    padding: 3px;
   }

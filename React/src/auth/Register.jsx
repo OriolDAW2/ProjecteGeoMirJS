@@ -15,14 +15,16 @@ export default function Register({setLogin}) {
   };
   const handleRegister = (input) => {
     input.preventDefault();
+    document.getElementById('password').hidden = true;
 
     let { name, password, password2, email } = formulari;
     console.log(
       "He enviat les Dades:  " + name + "/" + email + "/" + password + "/" + password2
     );
 
-    if (password2 !== password) {
-      alert("Els passwords han de coincidir");
+    if(password !== password2){
+      document.getElementById('password').hidden = false;
+      document.getElementById('password').innerHTML = 'Els passwords han de coincidir';
       return false;
     }
 
@@ -37,6 +39,8 @@ export default function Register({setLogin}) {
     })
       .then((data) => data.json())
       .then((resposta) => {
+        document.getElementById('errors').hidden = false;
+        document.getElementById('errors').innerHTML = resposta['message'];
         console.log(resposta);
         if (resposta.success === true) {
           console.log(resposta.authToken);
@@ -44,11 +48,12 @@ export default function Register({setLogin}) {
       })
       .catch((data) => {
         console.log(data);
-        alert("Catchch");
+        alert("Catch");
       });
 
     console.log("He enviat les Dades:  " + email + "/" + password);
   };
+  
   return (
     <div>
        <section class="form-login-r">
@@ -57,6 +62,8 @@ export default function Register({setLogin}) {
         <input class="controls" type="text" name="email" onChange={handleChange} placeholder="Correo Electronico"/>
         <input class="controls" type="password" name="password" onChange={handleChange} placeholder="Contraseña"/>
         <input class="controls" type="password" name="password2" onChange={handleChange} placeholder="Confirmar Contraseña"/>
+        <div hidden class="errors" id="password"></div>
+        <div hidden class="errors" id="errors"></div>
         <input class="buttons" type="submit" name=""  onClick={(input) => {handleRegister(input);}} value="Registrar"/>
         <button onClick={() => {setLogin(true);}}>¿Ya tienes cuenta?</button>
       </section>

@@ -8,6 +8,7 @@ export default function Login({setLogin}) {
 
   const sendLogin = (input) => {
     input.preventDefault();
+    document.getElementById('errors').hidden = true;
 
     console.log("Comprovant credencials....");
     // Enviam dades a l'aPI i recollim resultat
@@ -21,6 +22,8 @@ export default function Login({setLogin}) {
     })
       .then((data) => data.json())
       .then((resposta) => {
+        document.getElementById('errors').hidden = false;
+        document.getElementById('errors').innerHTML = resposta['message'];
         console.log(resposta);
         if (resposta.success === true) {
           console.log(resposta.authToken);
@@ -39,6 +42,7 @@ export default function Login({setLogin}) {
         <h5>Formulario Login</h5>
         <input class="controls" type="text" name="email" onChange={(input) => {setEmail(input.target.value);}} placeholder="Correo Electronico"/>
         <input class="controls" type="password" name="password" onChange={(input) => {setPassword(input.target.value);}} placeholder="Contraseña"/>
+        <div hidden class="errors" id="errors"></div>
         <input class="buttons" type="submit" name="" onClick={(input) => {sendLogin(input);}} value="Ingresar"/>
         <button onClick={() => {setLogin(false);}}>¿Ya tienes cuenta?</button>
         <p><a href="#">¿Olvidastes tu Contraseña?</a></p>

@@ -1,16 +1,39 @@
 import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-import './App.css'
+import { UserContext } from "./userContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import About from "./About";
+import Header from "./Layout/Header";
+import Footer from "./Layout/Footer";
 import LoginRegister from './auth/LoginRegister'
 
+import './App.css'
 
 function App() {
+  let [authToken, setAuthToken] = useState("abcd");
 
   return (
     <>
-      <LoginRegister/>
+      <UserContext.Provider
+        value = {{ authToken, setAuthToken }}
+        // { authToken, setAuthToken } equival a  { authToken: authToken, setAuthToken:setAuthToken}
+      >
+        {authToken ? (
+          <>
+          <Router>
+            <Header />
+            <Routes>
+              <Route path="/about" element={<About />} />
+            </Routes>
+            <Footer />
+          </Router>
+          </>
+        ) : (
+          <LoginRegister />
+        )}
+      </UserContext.Provider>
     </>
-  )
+  );
 }
 
 export default App
