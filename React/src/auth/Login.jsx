@@ -1,10 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
+import { useContext } from "react";
+import { UserContext } from '../userContext';
 import './css/login.css'
 
 export default function Login({setLogin}) {
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  let {authToken, setAuthToken} = useContext(UserContext);
 
   const sendLogin = (input) => {
     input.preventDefault();
@@ -27,6 +30,7 @@ export default function Login({setLogin}) {
         console.log(resposta);
         if (resposta.success === true) {
           console.log(resposta.authToken);
+          setAuthToken(resposta.authToken);
         }
       })
       .catch((data) => {
