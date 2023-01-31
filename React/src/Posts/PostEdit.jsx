@@ -1,13 +1,13 @@
 
 import './css/posts.css';
 
-export default function Posts() {
+export default function PostEdit() {
 
     
     return (
       <div>
         <section class="form-login-r">
-          <h2>Posts</h2>
+          <h2>Editar Post</h2>
           <textarea class="controls" type="text" name="body" placeholder="Mensaje"/>
           <input class="controls" type="text" name="latitude" placeholder="Latitud"/>
           <input class="controls" type="text" name="longitude" placeholder="Longitud"/>

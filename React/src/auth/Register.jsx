@@ -1,20 +1,24 @@
 import React from 'react'
 import { useState } from 'react';
+import { useContext } from "react";
+import { UserContext } from '../userContext';
 import './css/register.css'
 
 export default function Register({setLogin}) {
   let [formulari, setFormulari] = useState({});
+  let {authToken, setAuthToken} = useContext(UserContext);
 
-  const handleChange = (input) => {
-    input.preventDefault();
+  const handleChange = (e) => {
+    e.preventDefault();
 
     setFormulari({
       ...formulari,
-      [input.target.name]: input.target.value
+      [e.target.name]: e.target.value
     });
   };
-  const handleRegister = (input) => {
-    input.preventDefault();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
     document.getElementById('password').hidden = true;
 
     let { name, password, password2, email } = formulari;
@@ -27,31 +31,31 @@ export default function Register({setLogin}) {
       document.getElementById('password').innerHTML = 'Els passwords han de coincidir';
       return false;
     }
-
-    fetch("https://backend.insjoaquimmir.cat/api/register", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      method: "POST",
-      // Si els noms i les variables coincideix, podem simplificar
-      body: JSON.stringify({ name, email, password })
-    })
-      .then((data) => data.json())
-      .then((resposta) => {
-        document.getElementById('errors').hidden = false;
-        document.getElementById('errors').innerHTML = resposta['message'];
-        console.log(resposta);
-        if (resposta.success === true) {
-          console.log(resposta.authToken);
-        }
-      })
-      .catch((data) => {
-        console.log(data);
-        alert("Catch");
+  
+    // Enviam dades a l'API i recollim resultat
+    try {
+      const data = await fetch("https://backend.insjoaquimmir.cat/api/register", {
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({ name, email, password })
       });
 
-    console.log("He enviat les Dades:  " + email + "/" + password);
+      const resposta = await data.json();
+      document.getElementById('errors').hidden = false;
+      document.getElementById('errors').innerHTML = resposta['message'];
+      if (resposta.success === true) 
+        setAuthToken(resposta.authToken);
+      else 
+        console.log("La resposta no ha triomfat");
+
+      console.log("He enviat les Dades:  " + email + "/" + password);
+    } catch {
+      console.log("Error");
+      alert("catch");
+    }
   };
   
   return (
@@ -64,7 +68,7 @@ export default function Register({setLogin}) {
         <input class="controls" type="password" name="password2" onChange={handleChange} placeholder="Confirmar Contraseña"/>
         <div hidden class="errors" id="password"></div>
         <div hidden class="errors" id="errors"></div>
-        <input class="buttons" type="submit" name=""  onClick={(input) => {handleRegister(input);}} value="Registrar"/>
+        <input class="buttons" type="submit" name=""  onClick={(e) => {handleRegister(e);}} value="Registrar"/>
         <button onClick={() => {setLogin(true);}}>¿Ya tienes cuenta?</button>
       </section>
     </div>
