@@ -6,7 +6,7 @@ import './css/register.css'
 
 export default function Register({setLogin}) {
   let [formulari, setFormulari] = useState({});
-  let {authToken, setAuthToken} = useContext(UserContext);
+  let {authToken, setAuthToken, userEmail, setUserEmail} = useContext(UserContext);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -46,9 +46,10 @@ export default function Register({setLogin}) {
       const resposta = await data.json();
       document.getElementById('errors').hidden = false;
       document.getElementById('errors').innerHTML = resposta['message'];
-      if (resposta.success === true) 
+      if (resposta.success === true) {
         setAuthToken(resposta.authToken);
-      else 
+        setUserEmail(email);
+      }else 
         console.log("La resposta no ha triomfat");
 
       console.log("He enviat les Dades:  " + email + "/" + password);
@@ -60,15 +61,15 @@ export default function Register({setLogin}) {
   
   return (
     <div>
-       <section class="form-login-r">
+       <section className="form-login-r">
         <h5>Formulario Registro</h5>
-        <input class="controls" type="text" name="name" onChange={handleChange} placeholder="Usuario"/>
-        <input class="controls" type="text" name="email" onChange={handleChange} placeholder="Correo Electronico"/>
-        <input class="controls" type="password" name="password" onChange={handleChange} placeholder="Contraseña"/>
-        <input class="controls" type="password" name="password2" onChange={handleChange} placeholder="Confirmar Contraseña"/>
-        <div hidden class="errors" id="password"></div>
-        <div hidden class="errors" id="errors"></div>
-        <input class="buttons" type="submit" name=""  onClick={(e) => {handleRegister(e);}} value="Registrar"/>
+        <input className="controls" type="text" name="name" onChange={handleChange} placeholder="Usuario"/>
+        <input className="controls" type="text" name="email" onChange={handleChange} placeholder="Correo Electronico"/>
+        <input className="controls" type="password" name="password" onChange={handleChange} placeholder="Contraseña"/>
+        <input className="controls" type="password" name="password2" onChange={handleChange} placeholder="Confirmar Contraseña"/>
+        <div hidden className="errors" id="password"></div>
+        <div hidden className="errors" id="errors"></div>
+        <input className="buttons" type="submit" name=""  onClick={(e) => {handleRegister(e);}} value="Registrar"/>
         <button onClick={() => {setLogin(true);}}>¿Ya tienes cuenta?</button>
       </section>
     </div>

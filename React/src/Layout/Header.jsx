@@ -69,8 +69,8 @@ export default function Header() {
 
   return (
     <>
-      <div class="header">
-        <Link to="/index">Inici </Link>
+      <div className="header">
+        <Link to="/">Inici </Link>
         <Link to="/posts">Posts </Link>
         <Link to="/places">Places </Link>
         <Link to="/about">About </Link>

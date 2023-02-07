@@ -4,11 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import About from "./About";
 import Places from "./Places/Places";
-// import Posts from "./Posts/Posts";
-import Post from "./Posts/Post";
-import PostsList from "./Posts/PostsList";
+import PostsList from './Posts/PostsList';
 import PostAdd from "./Posts/PostAdd";
 import PostEdit from "./Posts/PostEdit";
+import Post from './Posts/Post';
 import Index from './Index';
 import Header from "./Layout/Header";
 import Footer from "./Layout/Footer";
@@ -19,12 +18,13 @@ import PostsGrid from "./Posts/PostsGrid";
 
 import './App.css'
 
-function App() {
+const App = () => {
   let [authToken, setAuthToken] = useState("");
+  let [userEmail, setUserEmail] = useState("");
 
   return (
     <>
-      <UserContext.Provider value = {{ authToken, setAuthToken }}
+      <UserContext.Provider value = {{ authToken, setAuthToken, userEmail, setUserEmail }}
       
       >
         {authToken ? (
