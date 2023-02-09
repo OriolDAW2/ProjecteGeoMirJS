@@ -54,6 +54,7 @@ export default function PostAdd () {
         if (resposta.success === true){
           console.log(resposta);
           setAuthToken(authToken);
+          alert("Post Creat");
         } else{
           console.log(formulari)
           setPost(resposta.message);
