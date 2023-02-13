@@ -14,6 +14,7 @@ export default function PostList ({post, deletePost}) {
         <td>{post.latitude}</td>
         <td>{post.longitude}</td>
         <td>{post.visibility.name}</td>
+        <td>{post.comments_count}</td>
         <td><i className=""></i></td> : <td/>
         <Link className="verpost" to={"/posts/" +post.id}><i className="">Ver Post</i></Link>
 

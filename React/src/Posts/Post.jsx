@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from '../userContext';
-
+import { CommentsList } from './comments/CommentsList';
 
 export default function Post () {
   const { id } = useParams();
@@ -87,6 +87,7 @@ export default function Post () {
                 </button>}
             </div>
       </div>
+      <div className=''><CommentsList id={post.id}/></div>
     </div>
   )
 }

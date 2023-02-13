@@ -76,6 +76,7 @@ export default function PostsList () {
             <th>Latitude</th>
             <th>Longitude</th>
             <th>Visibility</th>
+            <th>Comments</th>
           </tr>       
           {posts.map((post) => (
               (post.visibility.name == 'public' || userEmail == post.author.email) &&  
