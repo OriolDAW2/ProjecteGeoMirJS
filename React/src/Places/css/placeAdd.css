@@ -1,0 +1,23 @@
+.Form {
+    margin: 30px;
+}
+
+#body {
+    margin-bottom: 20px;
+}
+
+#latitude {
+    margin-bottom: 20px;
+}
+
+#longitude {
+    margin-bottom: 20px;
+}
+
+#visibility {
+    margin-bottom: 20px;
+}
+
+#upload {
+    margin-bottom: 20px;
+}
