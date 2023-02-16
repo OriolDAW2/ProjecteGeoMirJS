@@ -10,17 +10,17 @@ import "../App.css";
 import { Icon } from "leaflet";
 
 import { Marker, Popup, MapContainer, TileLayer, useMap } from "react-leaflet";
-import { PostsMenu } from "./PostsMenu";
-import { CommentAdd } from "./comments/CommentAdd";
-import { CommentsList } from "./comments/CommentsList";
+import { PlacesMenu } from "./PlacesMenu";
+import { ReviewAdd } from "./reviews/ReviewAdd";
+import { ReviewsList } from "./reviews/ReviewsList";
 // import { MarkerLayer, Marker } from "react-leaflet-marker";
 
-export const Post = () => {
+export const PlacesShow = () => {
   const { id } = useParams();
 
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
-  let [post, setPost] = useState({});
+  let [place, setPlace] = useState({});
 
   // place és un objecte, amb ojctes interns (place.file.filepath, per exemple)
   // Quan llegim amb fetch aquest triga un estona en obtenir les dades
@@ -29,14 +29,16 @@ export const Post = () => {
   // té el valor correcte
   // Emprem isLoading, per rendertizar només quan ja s'ha carregat el place
   let [isLoading, setIsLoading] = useState(true);
-  let [liked, setLiked] = useState(false);
-  let [likes, setLikes] = useState(0);
+  let [favorited, setFavorited] = useState(false);
+  let [favorites, setFavorites] = useState(0)
 
-  const unlike = async () => {
-    setLiked(false);
-    console.log("Not Liked");
+
+  const unfavourite = async () => {
+
+    setFavorited(false);
+    console.log("Not Favorited");
     const data = await fetch(
-      "https://backend.insjoaquimmir.cat/api/posts/" + id + "/likes",
+      "https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites",
       {
         headers: {
           Accept: "application/json",
@@ -48,14 +50,17 @@ export const Post = () => {
     );
     const resposta = await data.json();
     if (resposta.success == true) {
-      setLiked(false);
-      setLikes(likes - 1);
+      setFavorited(false);
+      setFavorites(favorites-1)
+      
     }
-  };
-  const like = async () => {
+  
+
+  }
+  const favourite = async () => {
     try {
       const data = await fetch(
-        "https://backend.insjoaquimmir.cat/api/posts/" + id + "/likes",
+        "https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites",
         {
           headers: {
             Accept: "application/json",
@@ -68,20 +73,23 @@ export const Post = () => {
       const resposta = await data.json();
 
       if (resposta.success == true) {
-        setLiked(true);
-        setLikes(likes + 1);
+        setFavorited(true);
+        setFavorites(favorites+1)
+        
       } else {
-        setLiked(false);
+        setFavorited(false);
         console.log("Epp, algo ha passat ");
       }
     } catch (e) {
       console.log(e);
     }
+
+
   };
-  const test_like = async () => {
+  const test_favourite = async () => {
     try {
       const data = await fetch(
-        "https://backend.insjoaquimmir.cat/api/posts/" + id + "/likes",
+        "https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites",
         {
           headers: {
             Accept: "application/json",
@@ -95,10 +103,10 @@ export const Post = () => {
 
       console.log(resposta);
       if (resposta.success == true) {
-        setLiked(false);
-        console.log("Not Liked");
+        setFavorited(false);
+        console.log("Not Favorited");
         const data = await fetch(
-          "https://backend.insjoaquimmir.cat/api/posts/" + id + "/likes",
+          "https://backend.insjoaquimmir.cat/api/places/" + id + "/favorites",
           {
             headers: {
               Accept: "application/json",
@@ -110,18 +118,18 @@ export const Post = () => {
         );
         const resposta = await data.json();
       } else {
-        setLiked(true);
-        console.log("Liked");
+        setFavorited(true);
+        console.log("Favorited");
       }
     } catch (e) {
       console.log("oeoeoeoe");
       console.log(e);
     }
   };
-  const getPost = async () => {
+  const getPlaces = async () => {
     try {
       const data = await fetch(
-        "https://backend.insjoaquimmir.cat/api/posts/" + id,
+        "https://backend.insjoaquimmir.cat/api/places/" + id,
         {
           headers: {
             Accept: "application/json",
@@ -141,10 +149,10 @@ export const Post = () => {
       // per tant, hem de crear un array, d'un sol element
       // per a que el .map del jsx pugui iterar l'únic
       // element
-      setPost(resposta.data);
-      setLikes(resposta.data.likes_count);
-      console.log(resposta.data.likes_count);
-      console.log(post);
+      setPlace(resposta.data);
+      setFavorites (resposta.data.favorites_count)
+      console.log(resposta.data.favorites_count)
+      console.log(place);
       // Ara podem dir que ja s'ha carregat place i es pot renderitzar
       setIsLoading(false);
 
@@ -161,19 +169,19 @@ export const Post = () => {
   // Sempre necessari, o al actualitzar l'state torna a executar-ho i entra
   // en bucle
   useEffect(() => {
-    getPost();
-    test_like();
+    getPlaces();
+    test_favourite();
   }, []);
 
   const position = [43.92853, 2.14255];
 
-  const deletePost = (id, e) => {
+  const deletePlace = (id, e) => {
     e.preventDefault();
 
     let confirma = confirm("Estas  segur?");
 
     if (confirma) {
-      fetch("https://backend.insjoaquimmir.cat/api/posts/" + id, {
+      fetch("https://backend.insjoaquimmir.cat/api/places/" + id, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -207,7 +215,7 @@ export const Post = () => {
               <img
                 src={
                   "https://backend.insjoaquimmir.cat/storage/" +
-                  post.file.filepath
+                  place.file.filepath
                 }
                 alt=""
                 className=" col-span-1 w-200 h-96 items-center"
@@ -217,23 +225,23 @@ export const Post = () => {
             </div>
 
             <div className="max-w-xl">
-              {/* <h2 className="bg-blue-300 col-span-1 text-xl font-semibold">
-                {post.name}
-              </h2> */}
+              <h2 className="bg-blue-300 col-span-1 text-xl font-semibold">
+                {place.name}
+              </h2>
               <span className="bg-blue-200 col-span-1 block pb-2 text-sm dark:text-gray-400">
-                Enviada per: {post.author.name}
+                Enviada per: {place.author.name}
               </span>
               <span className="self-center   px-9 bg-gray-200 col-span-2 text-x2 font-semibold">
-                Latitud: {post.latitude}{" "}
+                Latitud: {place.latitude}{" "}
               </span>
               <span className="self-center px-7 bg-gray-200 text-x2 font-semibold">
-                Longitud: {post.longitude}
+                Longitud: {place.longitude}
               </span>
 
               <div className="bg-orange-100 py-3 text-x2 font-semibold">
-                Cos
+                Descripció
               </div>
-              <p className=" bg-yellow-100">{post.body}</p>
+              <p className=" bg-yellow-100">{place.description}</p>
               <div className="mt-10 h-12 max-h-full md:max-h-screen">
                 {/* <MapContainer  style={{ height: 280 }} center={[43.92853, 2.14255]} zoom={12} scrollWheelZoom={false}>
   <TileLayer
@@ -247,10 +255,10 @@ export const Post = () => {
   </Marker>
 </MapContainer> */}
 
-                {post.author.email === usuari ? (
+                {place.author.email === usuari ? (
                   <>
                     <Link
-                      to={"/posts/edit/" + id}
+                      to={"/places/edit/" + id}
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-10 px-4 h-10 md:h-10 uppercase"
                     >
                       {" "}
@@ -259,7 +267,7 @@ export const Post = () => {
                     <a
                       href="#"
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase"
-                      onClick={(e) => deletePost(id, e)}
+                      onClick={(e) => deletePlace(id, e)}
                     >
                       {" "}
                       Esborrar
@@ -268,28 +276,28 @@ export const Post = () => {
                 ) : (
                   <></>
                 )}
-                {liked ? (
+                {favorited ? (
                   <a
                     href="#"
-                    onClick={(e) => unlike(id, e)}
+                    onClick={(e) => unfavourite(id, e)}
                     className="bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase"
                   >
-                    - 👍 {likes}
+                    - ❤️ {favorites}
                   </a>
                 ) : (
                   <a
                     href="#"
-                    onClick={(e) => like(id, e)}
+                    onClick={(e) => favourite(id, e)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase"
                   >
-                    + 👍 {likes}
+                    + ❤️ {favorites}
                   </a>
                 )}
 
                 {/* <ReviewAdd id={place.id}/> */}
-                <CommentsList
-                  id={post.id}
-                  comments_count={post.comments_count}
+                <ReviewsList
+                  id={place.id}
+                  reviews_count={place.reviews_count}
                 />
               </div>
             </div>

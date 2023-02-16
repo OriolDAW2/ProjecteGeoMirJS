@@ -1,48 +1,40 @@
-import { useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../userContext';
-import './css/posts.css';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { PostEdit } from "./PostEdit";
+import { PostsAdd } from "./PostsAdd";
+import { PostsGrid } from "./PostsGrid";
+import { PostsList } from "./PostsList";
+import { PostsMenu } from "./PostsMenu";
+import { Post } from "./Post";
 
-export default function Post() {
-    const { id } = useParams();
-    let { authToken, setAuthToken } = useContext(UserContext);
-    let [ posts, setPosts] = useState([]);
+export const Posts = () => {
+  let [afegir, setAfegir] = useState(false);
+  let [grid, setGrid] = useState(false);
+  let [editar, setEditar] = useState(false);
 
-    const getPosts = async () => {
-    
-      // Enviam dades a l'API i recollim resultat
-      try {
-        const data = await fetch("https://backend.insjoaquimmir.cat/api/posts", {
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + authToken,
-  
-          },
-          method: "GET",
-        });
-  
-        const resposta = await data.json();
-        if (resposta.success === true) {
-          setAuthToken(authToken);
-          setPosts(resposta.data);
-          console.log(resposta.data);
-        }else 
-          console.log("La resposta no ha triomfat");
-      } catch {
-        console.log("Error");
-        alert("catch");
-      }
-    };
+  const navega = useNavigate();
+  useEffect(() => {
+    navega("/posts/grid");
+  }, []);
+  //;
 
-    useEffect(() => {
-      getPosts();
-    }, [])
+  return (
+    <>
+      {<PostsMenu />}
+      {/* { editar==true ? <PlacesEdit setEditar={setEditar}/> : <></> } */}
+      {/* {  afegir==true ?  <PlacesAdd setAfegir={setAfegir} /> :<>
+        <div className="flex py-2 pl-9">
+     */}
 
-    return (
-      posts.map ( (p) => {
-        <div>{p.id}</div>
-      })
+      {/* <Route path="/places/list" element={ <PlacesList /> } /> 
+            <Route path="/places/grid" element={ <PlacesGrid /> } />  */}
 
-    );
-  }
+      {/* </div> */}
+      {/* Depenent de si cliquem grid o list veiem format llista o Grid */}
+      {/* { grid ? <PlacesGrid/> : <PlacesList/>} */}
+
+      {/* </>  } */}
+    </>
+  );
+};

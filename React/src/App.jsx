@@ -1,65 +1,93 @@
-import { useState } from 'react'
-import { UserContext } from "./userContext";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import About from "./About";
-// import Places from "./Places/Places";
-
-import PlacesList from './Places/PlacesList';
-import PostsList from './Posts/PostsList';
-import PlaceAdd from "./Places/PlaceAdd";
-import PostAdd from "./Posts/PostAdd";
-import PlaceEdit from "./Places/PlaceEdit";
-import PostEdit from "./Posts/PostEdit";
-import Place from './Places/Place';
-import Post from './Posts/Post';
-import Index from './Index';
-import Header from "./Layout/Header";
-import Footer from "./Layout/Footer";
-import LoginRegister from './auth/LoginRegister'
-import PlacesMenu from "./Places/PlacesMenu";
-import PostsMenu from "./Posts/PostsMenu";
-import PlacesGrid from "./Places/PlacesGrid";
-import PostsGrid from "./Posts/PostsGrid";
-
-
+import reactLogo from './assets/react.svg'
 import './App.css'
+import { LoginRegister } from './auth/LoginRegister'
+import { useState } from 'react'
+//import { createContext } from 'react'
 
-const App = () => {
-  let [authToken, setAuthToken] = useState("");
-  let [userEmail, setUserEmail] = useState("");
+import { UserContext } from './usercontext'
+import { Routes,Route } from 'react-router-dom'
+import { Header } from './components/layout/Header'
+import { Footer } from './components/layout/Footer'
+import { Places } from './places/Places'
+import { PlacesShow } from './places/PlacesShow'
+import { About } from './components/aplicacio/About'
+import { NotFound } from './components/aplicacio/NotFound'
+import { PlaceEdit } from './places/PlaceEdit'
+import { PlacesAdd } from './places/PlacesAdd'
+import { PlacesMenu } from './places/PlacesMenu'
+import { PlaceGrid } from './places/PlaceGrid'
+import { PlacesGrid } from './places/PlacesGrid'
+import { PlacesList } from './places/PlacesList'
+import { Posts } from './posts/Posts'
+import { PostsMenu } from './posts/PostsMenu'
+import { PostsList } from './posts/PostsList'
+import { PostsGrid } from './posts/PostsGrid'
+import { PostsAdd } from './posts/PostsAdd'
+import { Post } from './posts/Post'
+import { PostEdit } from './posts/PostEdit'
+
+
+// "leaflet": "^1.9.3",
+//     "react": "^18.2.0",
+//     "react-dom": "^18.2.0",
+//     "react-leaflet": "^4.2.0",
+//     "react-leaflet-marker": "^2.1.0",
+//     "react-router-dom": "^6.4.3"
+
+function App() {
+  
+
+  let [usuari, setUsuari] = useState("");
+  let [ authToken,setAuthToken] = useState("");
+
+  
 
   return (
-    <>
-      <UserContext.Provider value = {{ authToken, setAuthToken, userEmail, setUserEmail }}
+   <>
+
+    <UserContext.Provider value= { { usuari, setUsuari,authToken,setAuthToken }}>
       
-      >
-        {authToken ? (
-          <>
-            <Header />
-            <Routes>
-              {/* <Route path="/places" element={<Places />} /> */}
-              <Route path="/" element={<Index />} />
-              <Route path="/places" element={<> <PlacesMenu /><PlacesList /> </>} />
-              <Route path="/posts" element={<> <PostsMenu /><PostsList /> </>} />
-              <Route path="/places/add" element={<> <PlacesMenu /><PlaceAdd /> </>} />
-              <Route path="/posts/add" element={<> <PostsMenu /><PostAdd /> </>} />
-              <Route path="/places/:id" element={<> <PlacesMenu /><Place/> </>} />
-              <Route path="/posts/:id" element={<> <PostsMenu /><Post/> </>} />
-              <Route path="/places/edit/:id" element={<> <PlacesMenu /><PlaceEdit /> </>} />
-              <Route path="/posts/edit/:id" element={<> <PostsMenu /><PostEdit /> </>} />
-              <Route path="/about" element={<About />} />
-              <Route path="/places/grid" element={<> <PlacesMenu /><PlacesGrid /> </>} />
-              <Route path="/posts/grid" element={<> <PostsMenu /><PostsGrid /> </>} />
-            </Routes>
-            <Footer />
-          </>
-        ) : (
-          <LoginRegister />
-        )}
-      </UserContext.Provider>
-    </>
-  );
+      { authToken != "" ? (
+      
+        <>
+        <Header/>
+      
+         <Routes>
+            <Route path='*' element={<NotFound />} />
+            <Route path="/" element={<Places />}/>
+            <Route path="/places" element={<Places />} />
+            <Route path="/places/list" element={ <><PlacesMenu/><PlacesList /></> } /> 
+            <Route path="/places/grid" element={ <><PlacesMenu/><PlacesGrid /></> } /> 
+            <Route path="/places/add" element={ <><PlacesMenu/><PlacesAdd /></> } /> 
+            <Route path="/places/edit/:id" element={  <><PlacesMenu/><PlaceEdit /></> } />
+            <Route path="/places/:id" element={ <><PlacesMenu/><PlacesShow /></> } /> 
+
+            <Route path="/posts" element={<Posts/>} />
+            <Route path="/posts/list" element={ <><PostsMenu/><PostsList/></> } /> 
+            <Route path="/posts/grid" element={ <><PostsMenu/><PostsGrid/></> } /> 
+            <Route path="/posts/add" element={ <><PostsMenu/><PostsAdd/></> } /> 
+            <Route path="/posts/edit/:id" element={  <><PostsMenu/><PostEdit /></> } />
+            <Route path="/posts/:id" element={ <><PostsMenu/><Post/></> } /> 
+            
+            
+            
+             {/* <Route path="/posts" element={ <Places />} />
+            <Route path="/posts/:id" element={<PlacesShow />} /> */}
+            <Route path="/about" element={<About />} />
+        </Routes>
+
+        {/* <Footer/> */}
+       </>
+
+    ) :  <LoginRegister /> }
+    
+    </UserContext.Provider>
+
+      {/* <LoginRegister/> */}
+   </>
+  
+  )
 }
 
 export default App
+
