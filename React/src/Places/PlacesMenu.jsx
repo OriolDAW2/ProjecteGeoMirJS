@@ -32,14 +32,14 @@ export const PlacesMenu = () => {
    
     
   
-    <div class="-space-x-2 mx-auto w-max relative ">
+    <div className="-space-x-2 mx-auto w-max relative ">
       <input
-        class="peer bg-yellow-100 h-10 md:h-10 pl-14 text-xl font-semibold text-blue-700 focus:bg-yellow-400 outline-none caret-blue-700"
+        className="peer bg-yellow-100 h-10 md:h-10 pl-14 text-xl font-semibold text-blue-700 focus:bg-yellow-400 outline-none caret-blue-700"
         type="text"
       />
      
       <svg
-        class="w-5 absolute top-1/2 -translate-y-1/2 left-5 fill-blue-700 peer-focus-within:fill-blue-900"
+        className="w-5 absolute top-1/2 -translate-y-1/2 left-5 fill-blue-700 peer-focus-within:fill-blue-900"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
       >
@@ -49,7 +49,7 @@ export const PlacesMenu = () => {
       </svg>
 
       <button
-        class="bg-blue-500 hover:bg-blue-300 text-white font-semibold text-lg h-10 md:h-10 px-10 md:px-12"
+        className="bg-blue-500 hover:bg-blue-300 text-white font-semibold text-lg h-10 md:h-10 px-10 md:px-12"
       >
         Go
       </button>

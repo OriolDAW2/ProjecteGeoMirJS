@@ -92,7 +92,7 @@ export const Header = () => {
       <div className="flex items-center justify-between">
 
           <div className="flex items-center">
-          <div class="w-14 h-14 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-white text-xs">GEOMIR</div>
+          <div className="w-14 h-14 bg-yellow-500 rounded-full flex items-center justify-center font-bold text-white text-xs">GEOMIR</div>
 
 
               <div className="pl-9 ">

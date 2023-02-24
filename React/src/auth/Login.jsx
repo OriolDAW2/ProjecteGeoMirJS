@@ -1,17 +1,23 @@
 import React, { useContext } from 'react'
 import { useState } from 'react';
 import { UserContext } from '../usercontext';
+import { useForm } from '../hooks/useForm';
+import { useLogin } from '../hooks/useLogin';
 
 export const Login = ({ setLogin }) => {
 
   // Implementem codi de gestió 
-
-  let [email,setEmail] = useState("");
-  let [password, setPassword] = useState("");
   let [ error, setError] = useState("");
    
-   
-  let { usuari, setUsuari,authToken,setAuthToken } = useContext(UserContext)
+  let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+
+  const { formState, onInputChange } = useForm({
+    email: "",
+    password: "",
+    });
+    const {email,password} = formState;
+
+    const { doLogin} = useLogin()
   
   const check_login = (e) =>  {
 
@@ -46,10 +52,8 @@ export const Login = ({ setLogin }) => {
             }
         } ) 
     .catch((data) => {
-        setError("Network error")
+        console.log("Network error")
     });
-
-    
   }
   return (
     
@@ -60,17 +64,17 @@ export const Login = ({ setLogin }) => {
     <div x-show="!isLoginPage" className="space-y-4">
                 <header className="mb-3 text-2xl font-bold">Log in</header>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="text" placeholder="Email or username" onChange={ (e)=> { setEmail(e.target.value)} }
+                    <input type="text" placeholder="Email or username" name="email" onChange={onInputChange} value={email} 
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div
                     className="flex w-full items-center space-x-2 rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="password" placeholder="Password" onChange={ (e)=> { setPassword(e.target.value)} }
+                    <input type="password" placeholder="Password" name="password" onChange={onInputChange} value={password}
                         className="my-3 w-full border-none bg-transparent outline-none" />
                     <a href="#" className="font-medium text-gray-400 hover:text-gray-500">FORGOT?</a>
                 </div>
                 { error ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">{error}</div>) : (<></>)  }
-                <button onClick={ (e) => { check_login(e) }}
+                <button onClick={ () => { doLogin(formState) }}
                     className="w-full rounded-2xl border-b-4 border-b-blue-600 bg-blue-500 py-3 font-bold text-white hover:bg-blue-400 active:translate-y-[0.125rem] active:border-b-blue-400">
                     LOG IN
                 </button>

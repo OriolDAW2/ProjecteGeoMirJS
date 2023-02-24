@@ -1,21 +1,26 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useForm } from '../hooks/useForm';
+import { UserContext } from '../usercontext';
 
 export const Register = ({ setLogin }) => {
 
-
-    let [ register,setRegister] = useState({});
     let [ error, setError] = useState("");
+    let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
-
+    const { formState, onInputChange } = useForm({
+        name: "",
+        email: "",
+        password: "",
+        password2: "",
+        });
+        const {name, email, password, password2} = formState;
 
     const handleSubmit = (e) => {
 
         e.preventDefault();
 
-        const { name,email,password } = register
-
-        if (register.password !== register.password2 )
+        if (password !== password2)
         {
             alert ("Els passwords han de coincidir")
         }
@@ -27,7 +32,7 @@ export const Register = ({ setLogin }) => {
             },
             method: "POST",
             // Si els noms i les variables coincideix, podem simplificar
-            body: JSON.stringify({ name, email,password})
+            body: JSON.stringify({ name: name, email: email, password: password})
 
         })
         .then((data) => data.json())
@@ -35,6 +40,7 @@ export const Register = ({ setLogin }) => {
             console.log(resposta);
             if (resposta.success === true) {
             //alert(resposta.authToken);
+                setAuthToken(resposta.authToken);
             }
             else
             { 
@@ -48,30 +54,7 @@ export const Register = ({ setLogin }) => {
 
         alert("He enviat les Dades:  " + email + "/" + password);
 
-        
-
-
-
     }
-
-
-    const handleChange = (e)=> {
-
-        e.preventDefault();
-  
-  
-        setRegister({
-
-                ...register,
-                [e.target.name] : e.target.value
-                     
-    
-          })
-          console.log(register)
-          
-    }
-
-
     
   return (
    
@@ -81,19 +64,19 @@ export const Register = ({ setLogin }) => {
                 <header className="mb-3 text-2xl font-bold">Crea Usuari</header>
                 
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="text" name="name" placeholder="Name"  onChange={ handleChange}
+                    <input type="text" name="name" placeholder="Name" onChange={onInputChange} value={name}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="text" name="email" placeholder="Email"  onChange={ handleChange}
+                    <input type="text" name="email" placeholder="Email" onChange={onInputChange} value={email}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="password" name="password" placeholder="Password"  onChange={ handleChange}
+                    <input type="password" name="password" placeholder="Password" onChange={onInputChange} value={password}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="password2" name="password2" placeholder="Repeat Password"  onChange={ handleChange}
+                    <input type="password2" name="password2" placeholder="Repeat Password"  onChange={onInputChange}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 { error ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">{error}</div>) : (<></>)  }

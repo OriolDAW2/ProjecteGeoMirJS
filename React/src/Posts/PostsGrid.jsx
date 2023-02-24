@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../usercontext";
+import { useFetch } from "../hooks/useFetch";
 import editar from "../assets/editar.png";
 import esborrar from "../assets/esborrar.png";
 
@@ -13,45 +14,21 @@ import { Link } from "react-router-dom";
 import { PostGrid } from "./PostGrid";
 
 export const PostsGrid = () => {
-  // desa el retorn de dades de l'api places
-  let [posts, setPosts] = useState([]);
-  // Ho utilitzem per provar un refresc quan esborrem un element
-  let [refresca, setRefresca] = useState(false);
   // Dades del context. Ens cal el token per poder fer les crides a l'api
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
-  // només quan la vble d'estat refresca canvia el seu valor
-  // refresca canviarà el valor quan fem alguna operació com delete
-  useEffect(() => {
-    // Crida a l'api. mètode GET
-    fetch("https://backend.insjoaquimmir.cat/api/posts/", {
-      //mode: 'no-cors',
-      headers: {
-        // 'Access-Control-Allow-Origin': 'http://192.168.1.43:5173',
-        // 'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
-        // 'Access-Control-Allow-Headers': 'Accept, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-        // 'Access-Control-Request-Method': 'https',
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + authToken,
-      },
-      method: "GET",
-    })
-      .then((data) => data.json())
-      .then((resposta) => {
-        // Faria falta control·lar possible error
-        console.log("Resposta: " + resposta.data);
-        // Actualitzem la vble d'estat places
-        setPosts(resposta.data);
-        // Canvia el valor de refresca
-        // provocarà que entri a useEffect
-        // al fer el rendertizat
-        setRefresca(false);
-      });
-  }, [refresca]); // condició d'execució del useffect
+  // Crida a l'api. mètode GET
+  const { data, error, loading, reRender} = useFetch("https://backend.insjoaquimmir.cat/api/posts", {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + authToken,
+    },
+    method: "GET",
+  })
 
   // Esborrar un element
-  const deletePlace = (id, e) => {
+  const deletePost = (id, e) => {
     e.preventDefault();
 
     let confirma = confirm("Estas  segur?");
@@ -71,7 +48,7 @@ export const PostsGrid = () => {
           if (resposta.success == true) {
             console.log("OK");
             // provoca el refrescat del component i la reexecució de useEffect
-            setRefresca(true);
+            reRender();
           }
         });
     }
@@ -90,19 +67,15 @@ export const PostsGrid = () => {
           </div>
 
           <div className="grid gap-12 lg:grid-cols-2">
-            {posts.map((v, i) => {
+            {loading ? "Espera..." : <>{data.map((v) => {
               return (
-                <>
-              { v.visibility.id == 1 || v.author.email == usuari ? ( <PostGrid  setRefresca={ setRefresca } key={v.id} v={v}/>) : <></> }
-              
             
-              </>
-              )
-
-              
-
-
-            })}
+                <>
+                { v.visibility.id == 1 || v.author.email == usuari ? (<PostGrid  deletePost={ deletePost } key={v.id} v={v}/>) : <></> }
+            
+                </>
+                )   
+            })}</>}
 
             {/* <div className="p-1 rounded-xl group sm:flex space-x-6 bg-white bg-opacity-50 shadow-xl hover:rounded-2xl">
           <img src="https://tailus.io/sources/blocks/twocards/preview/images/man.jpg" alt="art cover" loading="lazy" width="1000" height="667" className="h-56 sm:h-full w-full sm:w-5/12 object-cover object-top rounded-lg transition duration-500 group-hover:rounded-xl"/>
