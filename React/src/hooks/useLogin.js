@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../usercontext';
 
 export const useLogin = () => {
-    let {authToken, setAuthToken } = useContext(UserContext);
+    let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
     const checkAuthToken = () => {
 
@@ -17,11 +17,12 @@ export const useLogin = () => {
                 "Authorization": "Bearer " + token,
             },
             method: "GET",
-            }).then( data => data.json() )
+            }).then(data => data.json() )
             .then((resposta) => {
             if (resposta.success === true) {
                 setAuthToken(token);
                 console.log("Token Correcte: " + token);
+                setUsuari(resposta.user.email);
             }else{
                 setAuthToken("");
             }
@@ -43,9 +44,8 @@ export const useLogin = () => {
             method: "POST",
             body: JSON.stringify(formState)
         }
-        ).then( data => data.json() )
-        .then (resposta => { 
-            
+        ).then(data => data.json() )
+        .then(resposta => { 
                 console.log(resposta); 
                 if (resposta.success === true )
                 {

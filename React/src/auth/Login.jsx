@@ -18,43 +18,7 @@ export const Login = ({ setLogin }) => {
     const {email,password} = formState;
 
     const { doLogin} = useLogin()
-  
-  const check_login = (e) =>  {
 
-    e.preventDefault();
-
-    console.log("Comprovant credencials....")
-    // Enviam dades a l'aPI i recollim resultat
-    fetch ("https://backend.insjoaquimmir.cat/api/login",{
-        
-         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            //"Access-Control-Allow-Origin": "*"  
-        },
-        method: "POST",
-        body: JSON.stringify({email: email, password: password})
-    }
-    ).then( data => data.json() )
-    .then (resposta => { 
-        
-            console.log(resposta); 
-            if (resposta.success == true )
-            {
-                setUsuari(email);
-                console.log(usuari)
-                setAuthToken(resposta.authToken);    
-            }
-            else
-            { 
-                console.log(resposta)
-                setError(resposta.message);
-            }
-        } ) 
-    .catch((data) => {
-        console.log("Network error")
-    });
-  }
   return (
     
    <section

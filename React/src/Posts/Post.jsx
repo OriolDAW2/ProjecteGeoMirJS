@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../usercontext";
+import { postMarkReducer } from "./marks/postMarkReducer";
+import { useReducer } from "react";
+import { useLocation } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 
 import "../App.css";
@@ -15,18 +18,27 @@ import { CommentAdd } from "./comments/CommentAdd";
 import { CommentsList } from "./comments/CommentsList";
 // import { MarkerLayer, Marker } from "react-leaflet-marker";
 
-export const Post = () => {
+// Estat inicial del reducer. Buit
+const initialState = [];
+const init = () => {
+  // Si localstorage tornes null tornariem un array buit
+  return JSON.parse(localStorage.getItem("marks")) || [];
+};
+
+export const Post = ({}) => {
+  const [marks, dispatchMarks] = useReducer(postMarkReducer, initialState, init);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    localStorage.setItem("marks", JSON.stringify(marks));
+  }, [marks]);
+
   const { id } = useParams();
 
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
   let [post, setPost] = useState({});
 
-  // place és un objecte, amb ojctes interns (place.file.filepath, per exemple)
-  // Quan llegim amb fetch aquest triga un estona en obtenir les dades
-  // i al renderitzar amb aquest objecte buit, dona error
-  // i l 'aplicació peta i ja no es torna a renderitzar quan places
-  // té el valor correcte
   // Emprem isLoading, per rendertizar només quan ja s'ha carregat el place
   let [isLoading, setIsLoading] = useState(true);
   let [liked, setLiked] = useState(false);
@@ -158,6 +170,26 @@ export const Post = () => {
       console.log(e);
     }
   };
+
+  const handleNewMark = (post) => {
+    console.log("Afegeixo");
+    console.log({ post });
+
+    const mark = {
+      id: new Date().getTime(),
+      body: post.body,
+      link: pathname,
+    }
+
+    const action = {
+      type: "Add Mark",
+      payload: mark,
+    };
+
+    console.log(mark)
+    dispatchMarks(action);
+  };
+
   // Sempre necessari, o al actualitzar l'state torna a executar-ho i entra
   // en bucle
   useEffect(() => {
@@ -268,6 +300,11 @@ export const Post = () => {
                 ) : (
                   <></>
                 )}
+                <a href="#"
+                  onClick={() => handleNewMark(post)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase">
+                  Desa
+                </a>
                 {liked ? (
                   <a
                     href="#"
@@ -285,7 +322,6 @@ export const Post = () => {
                     + 👍 {likes}
                   </a>
                 )}
-
                 {/* <ReviewAdd id={place.id}/> */}
                 <CommentsList
                   id={post.id}

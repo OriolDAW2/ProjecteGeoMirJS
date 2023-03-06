@@ -7,43 +7,6 @@ export const PostList = ({v, deletePost}) => {
   
     let { usuari, setUsuari,authToken,setAuthToken } = useContext(UserContext)
 
-    // const deletePost = (id,e) => {
-  
-    //   e.preventDefault();
-    
-    //   let confirma = confirm("Estas  segur?")
-    
-    //   if (confirma)
-    //   {
-    //     fetch ("https://backend.insjoaquimmir.cat/api/posts/"+id,{
-        
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json',
-    //             'Authorization': 'Bearer ' + authToken
-    //         },
-    //         method: "DELETE",
-           
-    //     }
-    //     ).then( data => data.json() )
-    //     .then (resposta => { 
-            
-    //             console.log(resposta); 
-    //             if (resposta.success == true )
-    //             {
-    //                 console.log("OK")
-    //                 // provoca el refrescat del component i la reexecució de useEffect
-    //                 setRefresca(true);
-                    
-    //             }
-    //         } ) 
-    
-    
-    
-    //   }
-    
-    
-    // }
     return (
   
   

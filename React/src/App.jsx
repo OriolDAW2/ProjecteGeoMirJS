@@ -1,23 +1,22 @@
-import reactLogo from './assets/react.svg'
-import './App.css'
 import { LoginRegister } from './auth/LoginRegister'
 import { useState } from 'react'
-//import { createContext } from 'react'
+import './App.css'
 
 import { UserContext } from './usercontext'
 import { Routes,Route } from 'react-router-dom'
 import { Header } from './components/layout/Header'
-import { Footer } from './components/layout/Footer'
-import { Places } from './places/Places'
+// import { Footer } from './components/layout/Footer'
 import { PlacesShow } from './places/PlacesShow'
 import { About } from './components/aplicacio/About'
 import { NotFound } from './components/aplicacio/NotFound'
+
+import { Places } from './places/Places'
 import { PlaceEdit } from './places/PlaceEdit'
 import { PlacesAdd } from './places/PlacesAdd'
 import { PlacesMenu } from './places/PlacesMenu'
-import { PlaceGrid } from './places/PlaceGrid'
 import { PlacesGrid } from './places/PlacesGrid'
 import { PlacesList } from './places/PlacesList'
+
 import { Posts } from './posts/Posts'
 import { PostsMenu } from './posts/PostsMenu'
 import { PostsList } from './posts/PostsList'
@@ -25,6 +24,10 @@ import { PostsGrid } from './posts/PostsGrid'
 import { PostsAdd } from './posts/PostsAdd'
 import { Post } from './posts/Post'
 import { PostEdit } from './posts/PostEdit'
+
+import { ToDos } from './todos/ToDos'
+
+import { PostsMarks } from './posts/marks/PostsMark'
 
 
 // "leaflet": "^1.9.3",
@@ -68,11 +71,11 @@ function App() {
             <Route path="/posts/add" element={ <><PostsMenu/><PostsAdd/></> } /> 
             <Route path="/posts/edit/:id" element={  <><PostsMenu/><PostEdit /></> } />
             <Route path="/posts/:id" element={ <><PostsMenu/><Post/></> } /> 
+
+            <Route path="/todos" element={ <><ToDos/></> } />
+
+            <Route path="/posts/marks" element={ <><PostsMenu/><PostsMarks/></> } />
             
-            
-            
-             {/* <Route path="/posts" element={ <Places />} />
-            <Route path="/posts/:id" element={<PlacesShow />} /> */}
             <Route path="/about" element={<About />} />
         </Routes>
 

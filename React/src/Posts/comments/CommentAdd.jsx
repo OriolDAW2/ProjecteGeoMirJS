@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../usercontext";
 import { CommentsContext } from "./commentsContext";
@@ -7,8 +6,7 @@ import { useForm } from "../../hooks/useForm";
 
 export const CommentAdd = ({ id }) => {
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-  let { setAdd, setRefresca, commentsCount, setCommentsCount } =
-    useContext(CommentsContext);
+  let { setAdd, setRefresca, commentsCount, setCommentsCount } = useContext(CommentsContext);
 
   const { formState, onInputChange, onResetForm } = useForm({
     comment: "",
