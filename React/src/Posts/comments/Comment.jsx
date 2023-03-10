@@ -51,8 +51,8 @@ export const Comment = ({ comment }) => {
   };
 
   return (
-    <div class="px-10">
-      <div class="bg-white max-w-xl rounded-2xl px-10 py-8  hover:shadow-2xl transition duration-500">
+    <div class="px-10 py-2">
+      <div class="bg-blue-200 max-w-xl rounded-2xl px-10 py-8  hover:shadow-2xl transition duration-500">
         <div class="mt-4">
           <h1 class="text-lg text-gray-700 font-semibold hover:underline cursor-pointer">
             Comentari de {comment.user.name}
@@ -75,7 +75,7 @@ export const Comment = ({ comment }) => {
           <div class="flex justify-between items-center">
             <div class="mt-4 flex items-center space-x-4 py-6">
               <div class="text-sm font-semibold">
-                <span class="font-normal">
+                <span class="font-normal text-gray-600">
                   <TimeAgo
                     date={comment.created_at}
                     formatter={formatter}

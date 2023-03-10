@@ -40,7 +40,7 @@ export const CommentAdd = ({ id }) => {
   };
   return (
     <>
-      <div class="flex mx-auto items-center justify-center  mt-6 mx-8 mb-4 max-w-lg">
+      <div class="flex mx-auto items-center justify-center mt-12 mx-8 mb-4 max-w-lg">
         <form class="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
           <div class="flex flex-wrap -mx-3 mb-6">
             <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">
@@ -50,7 +50,7 @@ export const CommentAdd = ({ id }) => {
               <textarea
                 onChange={onInputChange}
                 value={comment}
-                class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                class="bg-gray-100 text-gray-600 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
                 name="comment"
                 placeholder="Escriu el teu comentari"
                 required
@@ -73,15 +73,15 @@ export const CommentAdd = ({ id }) => {
                 </svg>
                 <p class="text-xs md:text-sm pt-px">Some HTML is okay.</p>
               </div>
-              <div class="-mr-1">
+              <div class="mr-1">
                 <input
                   onClick={addComment}
                   type="button"
-                  className="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
-                  value="Post Review"
+                  className="bg-white text-gray-600 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                  value="Comment Add"
                 />
               </div>
-              <div class="-mr-1">
+              <div class="mr-1">
                 <input
                   onClick={onResetForm}
                   type="button"

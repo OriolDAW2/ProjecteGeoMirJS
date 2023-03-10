@@ -4,30 +4,31 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../usercontext";
-import { postMarkReducer } from "./marks/postMarkReducer";
-import { useReducer } from "react";
+
+// import { postMarkReducer } from "./marks/postMarkReducer";
+// import { useReducer } from "react";
+
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { addmark } from "../slices/postMarkSlice";
+import { ismarked } from "../slices/postMarkSlice";
 import { useLocation } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 
 import "../App.css";
-import { Icon } from "leaflet";
 
-import { Marker, Popup, MapContainer, TileLayer, useMap } from "react-leaflet";
-import { PostsMenu } from "./PostsMenu";
-import { CommentAdd } from "./comments/CommentAdd";
-import { CommentsList } from "./comments/CommentsList";
+// import { Icon } from "leaflet";
+// import { Marker, Popup, MapContainer, TileLayer, useMap } from "react-leaflet";
+// import { PostsMenu } from "./PostsMenu";
+// import { CommentAdd } from "./comments/CommentAdd";
 // import { MarkerLayer, Marker } from "react-leaflet-marker";
 
-// Estat inicial del reducer. Buit
-const initialState = [];
-const init = () => {
-  // Si localstorage tornes null tornariem un array buit
-  return JSON.parse(localStorage.getItem("marks")) || [];
-};
+import { CommentsList } from "./comments/CommentsList";
 
 export const Post = ({}) => {
-  const [marks, dispatchMarks] = useReducer(postMarkReducer, initialState, init);
+  const { marks, isMarked } = useSelector(state => state.marks)
   const { pathname } = useLocation();
+  const dispatch = useDispatch(); 
 
   useEffect(() => {
     localStorage.setItem("marks", JSON.stringify(marks));
@@ -171,30 +172,26 @@ export const Post = ({}) => {
     }
   };
 
-  const handleNewMark = (post) => {
-    console.log("Afegeixo");
-    console.log({ post });
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    if (post.body.length <= 1) return;
 
     const mark = {
-      id: new Date().getTime(),
+      id: post.id,
       body: post.body,
       link: pathname,
     }
 
-    const action = {
-      type: "Add Mark",
-      payload: mark,
-    };
-
-    console.log(mark)
-    dispatchMarks(action);
-  };
+    console.log("Abans del dispatch");
+    dispatch(addmark(mark));
+};
 
   // Sempre necessari, o al actualitzar l'state torna a executar-ho i entra
   // en bucle
   useEffect(() => {
     getPost();
     test_like();
+    dispatch(ismarked(id));
   }, []);
 
   const position = [43.92853, 2.14255];
@@ -252,38 +249,38 @@ export const Post = ({}) => {
               {/* <h2 className="bg-blue-300 col-span-1 text-xl font-semibold">
                 {post.name}
               </h2> */}
-              <span className="bg-blue-200 col-span-1 block pb-2 text-sm dark:text-gray-400">
+              <span className=" col-span-1 block pb-2 text-sm dark:text-gray-400">
                 Enviada per: {post.author.name}
               </span>
-              <span className="self-center   px-9 bg-gray-200 col-span-2 text-x2 font-semibold">
+              <span className="bg-blue-500 self-center px-9 col-span-2 text-x2 font-semibold">
                 Latitud: {post.latitude}{" "}
               </span>
-              <span className="self-center px-7 bg-gray-200 text-x2 font-semibold">
+              <span className="bg-blue-400 self-center px-7 text-x2 font-semibold">
                 Longitud: {post.longitude}
               </span>
 
-              <div className="bg-orange-100 py-3 text-x2 font-semibold">
+              <div className="py-3 text-x5 font-semibold">
                 Cos
               </div>
-              <p className=" bg-yellow-100">{post.body}</p>
+              <p className="">{post.body}</p>
               <div className="mt-10 h-12 max-h-full md:max-h-screen">
                 {/* <MapContainer  style={{ height: 280 }} center={[43.92853, 2.14255]} zoom={12} scrollWheelZoom={false}>
-  <TileLayer
-    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  />
-  <Marker position={[43.92853, 2.14255]}>
-    <Popup>
-       { position }. 
-    </Popup>
-  </Marker>
-</MapContainer> */}
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[43.92853, 2.14255]}>
+                    <Popup>
+                      { position }. 
+                    </Popup>
+                  </Marker>
+                </MapContainer> */}
 
                 {post.author.email === usuari ? (
                   <>
                     <Link
                       to={"/posts/edit/" + id}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-10 px-4 h-10 md:h-10 uppercase"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py- mt-10 px-4 h-10 md:h-10 uppercase"
                     >
                       {" "}
                       Editar{" "}
@@ -300,11 +297,18 @@ export const Post = ({}) => {
                 ) : (
                   <></>
                 )}
-                <a href="#"
-                  onClick={() => handleNewMark(post)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase">
-                  Desa
-                </a>
+                {isMarked ? (
+                  <a href="#"
+                    className="bg-blue-200 hover:bg-blue-500 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase">
+                    Desat
+                  </a>
+                ) : (
+                  <a href="#"
+                    onClick={(e) => onFormSubmit(e)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase">
+                    Desar
+                  </a>
+                )}
                 {liked ? (
                   <a
                     href="#"

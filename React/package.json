@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.3",
     "cors": "^2.8.5",
     "install": "^0.13.0",
     "leaflet": "^1.9.3",
@@ -16,6 +17,7 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.0",
     "react-leaflet-marker": "^2.1.0",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-timeago": "^7.1.0",
     "timeago": "^1.6.7"

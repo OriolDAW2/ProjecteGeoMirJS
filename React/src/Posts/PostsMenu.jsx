@@ -35,7 +35,7 @@ export const PostsMenu = () => {
    
     
   
-    <div class="-space-x-2 mx-auto w-max relative ">
+    <div class="-space-x-2 mx-auto flex flex-row relative ">
       <input
         class="peer bg-yellow-100 h-10 md:h-10 pl-14 text-xl font-semibold text-blue-700 focus:bg-yellow-400 outline-none caret-blue-700"
         type="text"
@@ -52,7 +52,7 @@ export const PostsMenu = () => {
       </svg>
 
       <button
-        class="bg-blue-500 hover:bg-blue-300 text-white font-semibold text-lg h-10 md:h-10 px-10 md:px-12"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 h-10 md:h-10"
       >
         Go
       </button>

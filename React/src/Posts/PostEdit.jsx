@@ -6,8 +6,6 @@ import { Navigate, useParams } from 'react-router-dom';
 import { UserContext } from '../usercontext';
 import { useNavigate } from 'react-router';
 
-
-
 export const PostEdit = () => {
 
     const { id } = useParams();
@@ -15,15 +13,12 @@ export const PostEdit = () => {
 
     const [error,setError] = useState("")
     const [ avis, setAvis] = useState("");
-
    
     let { authToken } = useContext(UserContext)
     let [ formulari,setFormulari] = useState({});
 
-
     //const { id } = useParams();
     console.log(id)
-          
 
     const getPost = async () => {
       try {
