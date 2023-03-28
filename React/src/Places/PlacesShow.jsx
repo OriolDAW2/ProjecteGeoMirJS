@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
-import { UserContext } from "../usercontext";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { UserContext } from "../userContext";
 import "leaflet/dist/leaflet.css";
+import { useDispatch, useSelector } from "react-redux";
+import placesMarksReducer, { addplacemark, ismarked } from "../slices/placeMarkSlice";
 
 import "../App.css";
 import { Icon } from "leaflet";
@@ -16,8 +18,10 @@ import { ReviewsList } from "./reviews/ReviewsList";
 // import { MarkerLayer, Marker } from "react-leaflet-marker";
 
 export const PlacesShow = () => {
+  const { pathname } = useLocation();
   const { id } = useParams();
-
+  const { placeMarks, isMarked } = useSelector((state) => state.placeMarks);
+  const dispatch = useDispatch();
   let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
   let [place, setPlace] = useState({});
@@ -84,6 +88,31 @@ export const PlacesShow = () => {
       console.log(e);
     }
 
+
+  };
+
+  const markPlace = (event) => {
+    event.preventDefault();
+    console.log("Afegeixo");
+    // console.log({ post });
+
+    if (place.description.lenght <= 1) return;
+
+    const placeMark = {
+      id: place.id,
+      name: place.name,
+      description: place.description,
+      ruta: pathname
+    };
+
+    // const action = {
+    //     type: "Add Mark",
+    //     payload: mark
+    // };
+    console.log(placeMark)
+    dispatch(addplacemark(placeMark))
+
+    alert('HAS GUARDADO EL PLACE EN MARKS')
 
   };
   const test_favourite = async () => {
@@ -168,9 +197,11 @@ export const PlacesShow = () => {
   };
   // Sempre necessari, o al actualitzar l'state torna a executar-ho i entra
   // en bucle
+
   useEffect(() => {
     getPlaces();
     test_favourite();
+    dispatch(ismarked(id));
   }, []);
 
   const position = [43.92853, 2.14255];
@@ -292,7 +323,24 @@ export const PlacesShow = () => {
                   >
                     + ❤️ {favorites}
                   </a>
-                )}
+                  )}
+                  {isMarked ? (
+                    <a
+                      href="#"
+
+                      className="bg-blue-300 hover:bg-blue-400 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase"
+                    >
+                      DESAT
+                    </a>
+                  ) : (
+                    <a
+                      href="#"
+                      onClick={(e) => markPlace(e)}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-10 md:h-10 uppercase"
+                    >
+                      DESAR
+                    </a>
+                  )}
 
                 {/* <ReviewAdd id={place.id}/> */}
                 <ReviewsList

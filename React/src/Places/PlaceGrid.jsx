@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react';
-import { UserContext } from '../usercontext';
+import { UserContext } from '../userContext';
 
 export const PlaceGrid = ({v, setRefresca} ) => {
 

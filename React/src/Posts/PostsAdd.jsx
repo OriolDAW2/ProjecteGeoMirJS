@@ -1,32 +1,21 @@
 import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
-import { UserContext } from "../usercontext";
+import { useContext, useState, useEffect } from "react";
+import { UserContext } from "../userContext";
+import { Marker, Popup, useMapEvents, MapContainer, TileLayer } from "react-leaflet";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost } from "../slices/posts/thunks";
+
 import "leaflet/dist/leaflet.css";
-
 import "../App.css";
-import { Icon } from "leaflet";
 
-import {
-  Marker,
-  Popup,
-  useMapEvents,
-  MapContainer,
-  TileLayer,
-  useMap,
-} from "react-leaflet";
-import { PostsMenu } from "./PostsMenu";
-import { useEffect } from "react";
+export const PostsAdd = () => {
 
-export const PostsAdd = ({ setAfegir }) => {
-
-  let { authToken } = useContext(UserContext);
+  const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+  const { posts = [], page=0, error="", isLoading=true } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
 
   const [position, setPosition] = useState(null);
   const [formulari, setFormulari] = useState({});
-  const [error,setError] = useState("")
-  const [ avis, setAvis] = useState("");
-
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -77,86 +66,28 @@ export const PostsAdd = ({ setAfegir }) => {
       });
     }
   };
-  const afegir = (e) => {
-    e.preventDefault();
-
-    let { body, upload, latitude, longitude, visibility } =
-      formulari;
-    const formData = new FormData();
-    
-    formData.append("body", body);
-    formData.append("upload", upload);
-    formData.append("latitude", latitude);
-    formData.append("longitude", longitude);
-    formData.append("visibility", visibility);
-
-    console.log("Afegint un Post....");
-    console.log(formulari);
-    console.log(
-      JSON.stringify({
-    
-        body,
-        upload,
-        latitude,
-        longitude,
-        visibility,
-      })
-    );
-    // Enviam dades a l'aPI i recollim resultat
-    fetch("https://backend.insjoaquimmir.cat/api/posts", {
-      headers: {
-        Accept: "application/json",
-        //'Content-type': 'multipart/form-data',
-        Authorization: "Bearer " + authToken,
-      },
-      method: "POST",
-      // body: JSON.stringify({ name,description,upload,latitude,longitude,visibility })
-      body: formData,
-    })
-      .then((data) => data.json())
-      .then((resposta) => {
-        console.log(resposta);
-        if (resposta.success == true) {
-          console.log(authToken);
-          //setAfegir(false); // Tornem al llistat
-          setAvis("Missatge pemjat correctament")
-        } else {
-          setError(resposta.message)
-          console.log("S'ha produit un error");
-        }
-      });
-  };
-
-  const tornar = (e) => {
-    e.preventDefault();
-    //setAfegir(false);
-  };
 
   return (
     <>
-      <div className="py-9 pl-9">
-        {/* <form method="post" action="" enctype="multipart/form-data"> */}
-       
-
+      <div className="py-9 pl-9">       
         <div className="w-1/3">
           <label className="text-gray-600">Comentari</label>
           <textarea
             name="body"
             value={formulari.body}
             className="
-      w-full
-      h-32
-      px-4
-      py-3
-      border-2 border-gray-300
-      rounded-sm
-      outline-none
-      focus:border-blue-400
-    "
+              w-full
+              h-32
+              px-4
+              py-3
+              border-2 border-gray-300
+              rounded-sm
+              outline-none
+              focus:border-blue-400
+            "
             placeholder="Explica'ns alguna cosa d'aquest lloc..."
             onChange={handleChange}
           ></textarea>
-
           <div className="flex justify-center">
             <div className="mb-3 w-96">
               <label
@@ -169,20 +100,20 @@ export const PostsAdd = ({ setAfegir }) => {
                 name="upload"
                 onChange={handleChange}
                 className="form-control
-    block
-    w-full
-    px-3
-    py-1.5
-    text-base
-    font-normal
-    text-gray-700
-    bg-white bg-clip-padding
-    border border-solid border-gray-300
-    rounded
-    transition
-    ease-in-out
-    m-0
-    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  block
+                  w-full
+                  px-3
+                  py-1.5
+                  text-base
+                  font-normal
+                  text-gray-700
+                  bg-white bg-clip-padding
+                  border border-solid border-gray-300
+                  rounded
+                  transition
+                  ease-in-out
+                  m-0
+                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 type="file"
                 id="upload"
               />
@@ -237,7 +168,7 @@ export const PostsAdd = ({ setAfegir }) => {
           { error ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">{error}</div>) : (<></>)  }
           <div className="py-9">
             <button
-              onClick={afegir}
+              onClick={(e) => { e.preventDefault();  dispatch( addPost(formulari, authToken))} }
               type="submit"
               className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             >
@@ -246,12 +177,11 @@ export const PostsAdd = ({ setAfegir }) => {
           </div>
           <div className="py-9">
           { error ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">{error}</div>) : (<></>)  }
-          { avis ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-green-50 px-4 ring-2 ring-green-200 ">{avis}</div>) : (<></>)  }
           </div>
         </div>
         {/* </form> */}
         <MapContainer
-          style={{ height: 280 }}
+          style={{ height: 280, width: 1400 }}
           center={{ lat: 51.505, lng: -0.09 }}
           zoom={13}
         >

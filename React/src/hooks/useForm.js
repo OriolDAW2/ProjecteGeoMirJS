@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useForm = (initialForm={}) => {
 
@@ -6,40 +6,38 @@ export const useForm = (initialForm={}) => {
     
     const onInputChange = ({ target }) => {
     
-        // amb { target } desestructurem e
-        
-        // enlloc d'escriure e.target , escriurem target
-        
-        // Desestructurem ara target
+    // amb { target } desestructurem e
     
-        const { name, value } = target;
-        
-            setFormState({
-            
-            ...formState,
-            
-            // [target.name] : target.value
-            
-            [name]: value,
-        
-        });
+    // enlloc d'escriure e.target , escriurem target
+    
+    // Desestructurem ara target
+    
+    const { name, value } = target;
+    
+    setFormState({
+    
+    ...formState,
+    
+    // [target.name] : target.value
+    
+    [name]: value,
+    
+    });
     
     // Si no haguéssim desestrcuturat res...
     
     // [e.target.name] : e.target.value
     
     };
-
-    const onResetForm = () => {
-        setFormState(initialForm);
-    };
-
-    // ………………………
     
+    const onResetForm = ()=> {
+        setFormState(initialForm)
+    }
     // Podem afegir més mètodes
     
     // I s’hauran de retornar a continuació
     
-    return { ...formState, formState, onInputChange, onResetForm };
+    return { ...formState, formState,onInputChange, onResetForm };
     
-}
+    };
+

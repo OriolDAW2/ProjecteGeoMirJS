@@ -1,32 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    marks: JSON.parse(localStorage.getItem("marks")) || [] ,
+    postMarks: JSON.parse(localStorage.getItem("marksPosts")) || [],
     isMarked: false
 }
+
 export const postMarkSlice = createSlice({
-    name: 'marks',
+
+    name: 'postMarks',
     initialState,
     reducers: {
-        addmark: (state, action) => {
-            state.marks.push(action.payload) // aqui podem fer push
+        addpostmark: (state, action) => {
+            state.postMarks.push(action.payload) // aqui podem fer push
             state.isMarked = true;
-        },
-        
-        delmark: (state,action) => {
-            state.marks = state.marks.filter( mark => mark.id !== action.payload)
-        },
 
+        },
+        delpostmark: (state, action) => {
+            state.postMarks = state.postMarks.filter(postMarks => postMarks.id !== action.payload)
+        },
         ismarked: (state, action) => {
             state.isMarked = false
-            state.marks.map ((mark)=> {
-                if (mark.id == action.payload) { //id
-                    state.isMarked = true; // invertim el isMarked
+            state.postMarks.map((postMark) => {
+                if (postMark.id == action.payload) { //id
+                    state.isMarked = true;
                 }
             })
-        },
+        }
     }
 })
+export const { addpostmark, delpostmark, ismarked } = postMarkSlice.actions
+const postsMarksReducer = postMarkSlice.reducer
 
-export const { addmark, delmark, ismarked } = postMarkSlice.actions;
-export default postMarkSlice.reducer;
+export default postsMarksReducer

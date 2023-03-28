@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 import { useContext } from 'react'
 import { Navigate, useParams } from 'react-router-dom';
-import { UserContext } from '../usercontext';
+import { UserContext } from '../userContext';
 import { useNavigate } from 'react-router';
 
 

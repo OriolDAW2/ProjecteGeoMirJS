@@ -1,91 +1,65 @@
-import React from "react";
-import { useEffect } from "react";
-import { Comment } from "./Comment";
+  import React from "react";
+  import { useEffect } from "react";
+  import { Comment } from "./Comment";
 
-import { useContext } from "react";
-import { UserContext } from "../../usercontext";
+  import { useContext } from "react";
+  import { UserContext } from "../../userContext";
 
-import { useState } from "react";
-import { CommentAdd } from "./CommentAdd";
-import { CommentsContext } from "./commentsContext";
-// Fem servir un context únicament dins de tots els components de Reviews
+  import { useState } from "react";
+  import { CommentAdd } from "./CommentAdd";
+  import { CommentsContext } from "./commentsContext";
+  import { getComments } from "../../slices/comments/thunks";
+  import { useDispatch, useSelector } from "react-redux";
+  import { setAdd, setCommentsCount } from "../../slices/comments/commentSlice";
 
-export const CommentsList = ({ id, comments_count }) => {
-  //let {setAdd, setRefresca, reviewsCount, setReviewsCount } = useContext(ReviewsContext)
-  let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
-  let [error, setError] = useState("");
-  const [refresca, setRefresca] = useState(false);
-  const [add, setAdd] = useState(true);
-  const [commentsCount, setCommentsCount] = useState(comments_count);
+  // Fem servir un context únicament dins de tots els components de Comments
 
-  const [reviews, setReviews] = useState([]);
+  export const CommentsList = ({ id, comments_count }) => {
+    const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+    const { comments = [], page=0, isLoading=true, add=true, error="", commentsCount=0 } = useSelector((state) => state.comments);
+    const dispatch = useDispatch();
 
-  // review ={v} setAdd={setAdd } setRefresca={ setRefresca}
+    useEffect(() => {
+      dispatch(setCommentsCount(comments_count))
+      dispatch(getComments(0, id, authToken, email));
+    }, []);
 
-  const listComments = async () => {
-    const headers = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + authToken,
-      },
-      method: "GET",
-    };
+    return (
+      < >
+        {add ? <CommentAdd id={id} /> : <></>}
+        <div class="flex mx-auto items-center justify-center mt-6 mx-8 mb-4 max-w-lg">
+          {comments_count == 0 ? (
+            <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200">
+              No hi ha comments
+            </div>
+          ) : (
+            <div className="flex mb-4 w-full text-black items-center space-x-2 rounded-2xl bg-blue-50 px-4 ring-2 ring-blue-200">
+              Hi ha {commentsCount} {commentsCount > 1 ? " comentaris" : " comentari"}{" "}
+            </div>
+          )}
+        </div>
 
-    let data = await fetch(
-      "https://backend.insjoaquimmir.cat/api/posts/" + id + "/comments",
-      headers
-    );
-    let resposta = await data.json();
-    console.log(resposta);
-
-    if (resposta.success == true) { console.log(resposta.data); setReviews(resposta.data);}
-    else {
-      setError(resposta.message);
-    }
-
-    resposta.data.map((v) => {
-      if (v.user.email === usuari) {
-        setAdd(false);
-        console.log("Te review");
-      }
-    });
-  };
-
-  useEffect(() => {
-    listComments();
-    setRefresca(false);
-  }, [refresca]);
-
-  return (
-    <CommentsContext.Provider
-      value={{ setAdd, setRefresca, commentsCount, setCommentsCount }}
-    >
-      {add ? <CommentAdd id={id} /> : <></>}
-      <div class="flex mx-auto items-center justify-center  mt-6 mx-8 mb-4 max-w-lg">
-        {commentsCount == 0 ? (
-          <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200">
-            No hi ha comentaris
+        {error ? (
+          <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">
+            {error}
           </div>
         ) : (
-          <div className="flex mb-4 w-full text-black items-center space-x-2 rounded-2xl bg-blue-50 px-4 ring-2 ring-blue-200">
-            Hi ha {commentsCount} {commentsCount > 1 ? " comentaris." : " comentari."}{" "}
-          </div>
+          <></>
         )}
-      </div>
 
-      {error ? (
-        <div className="flex mb-4 w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">
-          {error}
-        </div>
-      ) : (
-        <></>
-      )}
-
-      {reviews.map((v) => {
-        return <Comment key={v.id} comment={v} />;
-      })}
-    </CommentsContext.Provider>
-  );
-};
+        
+        {isLoading ? (
+          <></>    
+        ) : (
+          Array.isArray(comments) && comments.length ? (
+            comments.map((v) => {
+              return <Comment key={v.id} comment={v} />;
+            })
+          ) : (
+            <div>No hay comentarios</div>
+          )
+        )}
+      </>
+    );
+  };

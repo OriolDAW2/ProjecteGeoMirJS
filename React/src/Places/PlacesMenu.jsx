@@ -25,6 +25,9 @@ export const PlacesMenu = () => {
     <button onClick={()=>{ navega("/places/list")}}  className={ !qui ? "text-white font-bold py-2 px-4 h-10 md:h-10 bg-orange-500 hover:bg-orange-700" : "text-white font-bold py-2 px-4 h-10 md:h-10 bg-orange-200 hover:bg-orange-700" }>
     Llista
     </button>
+    <button onClick={() => { navega("/places/mark") }} className={!qui ? "text-white font-bold py-2 px-4 h-10 md:h-10 bg-green-500 hover:bg-orange-700" : "text-white font-bold py-2 px-4 h-10 md:h-10 bg-orange-200 hover:bg-orange-700"}>
+      Marks
+    </button>    
     {/* <button onClick={()=> { setQui(true); setGrid(false)}}  className={ qui ? "text-white font-bold py-2 px-4 h-10 md:h-10 bg-orange-500 hover:bg-orange-700" : "text-white font-bold py-2 px-4 h-10 md:h-10 bg-orange-200 hover:bg-orange-700" }>
     Llista
     </button> */}
@@ -32,14 +35,14 @@ export const PlacesMenu = () => {
    
     
   
-    <div className="-space-x-2 mx-auto w-max relative ">
+    <div class="-space-x-2 mx-auto w-max relative ">
       <input
-        className="peer bg-yellow-100 h-10 md:h-10 pl-14 text-xl font-semibold text-blue-700 focus:bg-yellow-400 outline-none caret-blue-700"
+        class="peer bg-yellow-100 h-10 md:h-10 pl-14 text-xl font-semibold text-blue-700 focus:bg-yellow-400 outline-none caret-blue-700"
         type="text"
       />
      
       <svg
-        className="w-5 absolute top-1/2 -translate-y-1/2 left-5 fill-blue-700 peer-focus-within:fill-blue-900"
+        class="w-5 absolute top-1/2 -translate-y-1/2 left-5 fill-blue-700 peer-focus-within:fill-blue-900"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
       >
@@ -49,7 +52,7 @@ export const PlacesMenu = () => {
       </svg>
 
       <button
-        className="bg-blue-500 hover:bg-blue-300 text-white font-semibold text-lg h-10 md:h-10 px-10 md:px-12"
+        class="bg-blue-500 hover:bg-blue-300 text-white font-semibold text-lg h-10 md:h-10 px-10 md:px-12"
       >
         Go
       </button>

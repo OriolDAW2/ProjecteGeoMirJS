@@ -1,10 +1,10 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { deltodo, toggletodo } from "../slices/todosSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deltodo, toggletodo } from "../slices/todoSlice";
 
 export const ToDo = ({ todo }) => {
   // export const ToDo = ({ todo, handleToggleTodo,handleDeleteTodo}) => {
-  //const { todos } = useSelector(state => state.todos)
+  const { todos } = useSelector(state => state.todos)
   const dispatch = useDispatch();
 
   return (
@@ -12,7 +12,7 @@ export const ToDo = ({ todo }) => {
       <p className="w-full text-grey-darkest">
         <span className={todo.done ? "line-through" : ""}>
           {" "}
-          {todo.text}
+          {todo.description}
         </span>
       </p>
       {todo.done ? (

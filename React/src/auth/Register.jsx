@@ -1,26 +1,34 @@
 import React from 'react'
 import { useState, useContext } from 'react';
 import { useForm } from '../hooks/useForm';
-import { UserContext } from '../usercontext';
+import { UserContext } from '../userContext';
+
 
 export const Register = ({ setLogin }) => {
 
+    let { authToken,setAuthToken} = useContext(UserContext);
+    let [ register,setRegister] = useState({});
     let [ error, setError] = useState("");
-    let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
 
     const { formState, onInputChange } = useForm({
+
         name: "",
+
         email: "",
+        
         password: "",
+
         password2: "",
+        
         });
-        const {name, email, password, password2} = formState;
+        
+        const { name,email,password, password2} = formState
 
     const handleSubmit = (e) => {
 
         e.preventDefault();
 
-        if (password !== password2)
+        if (password !== password2 )
         {
             alert ("Els passwords han de coincidir")
         }
@@ -32,15 +40,14 @@ export const Register = ({ setLogin }) => {
             },
             method: "POST",
             // Si els noms i les variables coincideix, podem simplificar
-            body: JSON.stringify({ name: name, email: email, password: password})
+            body: JSON.stringify({ name : name, email : email ,password : password})
 
         })
         .then((data) => data.json())
         .then((resposta) => {
             console.log(resposta);
             if (resposta.success === true) {
-            //alert(resposta.authToken);
-                setAuthToken(resposta.authToken);
+                setAuthToken(resposta.authToken)
             }
             else
             { 
@@ -68,15 +75,15 @@ export const Register = ({ setLogin }) => {
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="text" name="email" placeholder="Email" onChange={onInputChange} value={email}
+                    <input type="text" name="email" placeholder="Email" onChange={ onInputChange} value={email}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="password" name="password" placeholder="Password" onChange={onInputChange} value={password}
+                    <input type="password" name="password" placeholder="Password"   onChange={ onInputChange} value={password}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 <div className="w-full rounded-2xl bg-gray-50 px-4 ring-2 ring-gray-200 focus-within:ring-blue-400">
-                    <input type="password2" name="password2" placeholder="Repeat Password"  onChange={onInputChange}
+                    <input type="password2" name="password2" placeholder="Repeat Password"   onChange={ onInputChange} value={password2}
                         className="my-3 w-full border-none bg-transparent outline-none focus:outline-none" />
                 </div>
                 { error ? (<div className="flex w-full items-center space-x-2 rounded-2xl bg-red-50 px-4 ring-2 ring-red-200 ">{error}</div>) : (<></>)  }

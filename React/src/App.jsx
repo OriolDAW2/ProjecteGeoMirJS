@@ -1,22 +1,23 @@
+import reactLogo from './assets/react.svg'
+import './App.css'
 import { LoginRegister } from './auth/LoginRegister'
 import { useState } from 'react'
-import './App.css'
+//import { createContext } from 'react'
 
-import { UserContext } from './usercontext'
+import { UserContext } from './userContext'
 import { Routes,Route } from 'react-router-dom'
 import { Header } from './components/layout/Header'
-// import { Footer } from './components/layout/Footer'
+import { Footer } from './components/layout/Footer'
+import { Places } from './places/Places'
 import { PlacesShow } from './places/PlacesShow'
 import { About } from './components/aplicacio/About'
 import { NotFound } from './components/aplicacio/NotFound'
-
-import { Places } from './places/Places'
 import { PlaceEdit } from './places/PlaceEdit'
 import { PlacesAdd } from './places/PlacesAdd'
 import { PlacesMenu } from './places/PlacesMenu'
+import { PlaceGrid } from './places/PlaceGrid'
 import { PlacesGrid } from './places/PlacesGrid'
 import { PlacesList } from './places/PlacesList'
-
 import { Posts } from './posts/Posts'
 import { PostsMenu } from './posts/PostsMenu'
 import { PostsList } from './posts/PostsList'
@@ -24,11 +25,9 @@ import { PostsGrid } from './posts/PostsGrid'
 import { PostsAdd } from './posts/PostsAdd'
 import { Post } from './posts/Post'
 import { PostEdit } from './posts/PostEdit'
-
-import { ToDos } from './todos/ToDos'
-
-import { PostsMarks } from './posts/marks/PostsMark'
-
+import { ToDos } from './todo/ToDos'
+import PostMarks from './posts/marks/PostMarks'
+import PlaceMarks from './places/marks/PlaceMarks'
 
 // "leaflet": "^1.9.3",
 //     "react": "^18.2.0",
@@ -50,7 +49,7 @@ function App() {
 
     <UserContext.Provider value= { { usuari, setUsuari,authToken,setAuthToken }}>
       
-      { authToken != "" ? (
+      { authToken ? (
       
         <>
         <Header/>
@@ -63,7 +62,9 @@ function App() {
             <Route path="/places/grid" element={ <><PlacesMenu/><PlacesGrid /></> } /> 
             <Route path="/places/add" element={ <><PlacesMenu/><PlacesAdd /></> } /> 
             <Route path="/places/edit/:id" element={  <><PlacesMenu/><PlaceEdit /></> } />
-            <Route path="/places/:id" element={ <><PlacesMenu/><PlacesShow /></> } /> 
+            <Route path="/places/:id" element={<><PlacesMenu /><PlacesShow /></>} />
+            <Route path="/places/mark" element={<><PlacesMenu /><PlaceMarks /></>} />
+
 
             <Route path="/posts" element={<Posts/>} />
             <Route path="/posts/list" element={ <><PostsMenu/><PostsList/></> } /> 
@@ -71,12 +72,12 @@ function App() {
             <Route path="/posts/add" element={ <><PostsMenu/><PostsAdd/></> } /> 
             <Route path="/posts/edit/:id" element={  <><PostsMenu/><PostEdit /></> } />
             <Route path="/posts/:id" element={ <><PostsMenu/><Post/></> } /> 
-
-            <Route path="/todos" element={ <><ToDos/></> } />
-
-            <Route path="/posts/marks" element={ <><PostsMenu/><PostsMarks/></> } />
+            <Route path="/posts/mark" element={<><PostsMenu/><PostMarks/></>}/>
             
+
             <Route path="/about" element={<About />} />
+            <Route path="/todos" element={ <><ToDos /></> } /> 
+
         </Routes>
 
         {/* <Footer/> */}

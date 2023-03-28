@@ -1,51 +1,20 @@
-import React, { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../usercontext";
+import React from "react";
+import { useContext, useEffect } from "react";
 
-import { PostsAdd } from "./PostsAdd";
-import { useEffect } from "react";
+import { UserContext } from "../userContext";
 import { PostList } from "./PostList";
-import { useFetch } from "../hooks/useFetch";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../slices/posts/thunks";
 
 export const PostsList = () => {
-  // Dades del context. Ens cal el token per poder fer les crides a l'api
-  let { usuari, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+  const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
+  const { posts = [], page=0, isLoading=true, error="" } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
 
-  // Crida a l'api. mètode GET
-  const { data, error, loading, reRender} = useFetch("https://backend.insjoaquimmir.cat/api/posts", {
-    headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + authToken,
-    },
-    method: "GET",
-  })
- 
-   // condició d'execució del useffect
-
-  // Esborrar un element
-  const deletePost = (id, e) => {
-
-    let confirma = confirm("Estas  segur?");
-
-    if (confirma) {
-      fetch("https://backend.insjoaquimmir.cat/api/posts/" + id, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authToken,
-        },
-        method: "DELETE",
-      })
-        .then((data) => data.json())
-        .then((resposta) => {
-          if (resposta.success == true) {
-            // provoca el refrescat del component i la reexecució de useEffect
-            reRender();
-          }
-        });
-    }
-  };
+  useEffect(() => {
+    dispatch(getPosts(0, authToken, email));
+  }, []);
 
   return (
     <>
@@ -66,9 +35,7 @@ export const PostsList = () => {
                     >
                       Descripció
                     </th>
-                    {/* <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                Fitxer                
-              </th> */}
+                   
                     <th
                       scope="col"
                       className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
@@ -97,7 +64,7 @@ export const PostsList = () => {
                       scope="col"
                       className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
                     >
-                      Likes
+                      Favorits
                     </th>
                     <th
                       scope="col"
@@ -122,47 +89,15 @@ export const PostsList = () => {
                   </tr>
                 </thead>
                 <tbody> 
-                  {loading ? "Espera..." : <>{data.map((v) => {
+                  {isLoading ? "Espera..." : <> { posts.map((v) => {
                     return (
             
                       <>
-                      { v.visibility.id == 1 || v.author.email == usuari ? (<PostList  deletePost={ deletePost } key={v.id} v={v}/>) : <></> }
+                      { v.visibility.id == 1 || v.author.email == usuari ? (<PostList key={v.id} v={v}/>) : <></> }
                   
                       </>
                       )
                   })}</>}
-                  
-
-                  {/* <tr className="bg-white border-b">
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Mark
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Otto
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                @mdo
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Otto
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                @mdo
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                Otto
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                @mdo
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                @mdo
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              👁️📝🗑️
-              </td>
-            </tr> */}
                 </tbody>
               </table>
             </div>

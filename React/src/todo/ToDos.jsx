@@ -1,52 +1,61 @@
 import React from "react";
-import { useEffect } from "react";
-import { ToDo } from "./ToDo";
-import { ToDoAdd } from "./ToDoAdd";
+import { useEffect, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addtodo } from "../slices/todoSlice";
 
-// import { todosReducer } from "./todoReducer";
+import { ToDo } from "./ToDo";
+import { ToDoAdd } from "./ToDosAdd";
+//import { todosReducer } from "./todosReducer";
+
+// Estat inicial del reducer. Buit
+// const initialState = [
+
+// ];
+// const init = ()=> {
+//   // Si localstorage tornes null tornariem un array buit
+//   return JSON.parse(localStorage.getItem("todos")) || []
+// }
 
 export const ToDos = () => {
-  // const [todos, dispatchTodos] = useReducer(todosReducer, initialState, init);
-  
-  const { todos } = useSelector(state => state.todos)
-  const dispatch = useDispatch(); 
+  //const [todos, dispatchTodos] = useReducer(todosReducer, initialState,init);
+
+  const { todos } = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  // const handleNewToDo = (todo) => {
-  //   console.log("Afegeixo");
-  //   console.log({ todo });
+  // const handleNewToDo = (todo)=> {
 
-  //   todo.id = new Date().getTime()
+  //   console.log("Afegeixo")
+  //   console.log({todo})
 
   //   const action = {
-  //     type: "Add Todo",
+  //     type: 'Add Todo',
   //     payload: todo
-  //   };
+  //   }
+  //   dispatchTodos(action)
 
-  //   console.log(todo)
-  //   dispatchTodos(action);
-  // };
+  // }
 
   // const handleDeleteToDo = (id) => {
-  //   console.log("AQui arribo " + id);
+
+  //   console.log("AQui arribo "+id)
   //   dispatchTodos({
-  //     type: "Del Todo",
+  //     type: 'Del Todo',
   //     payload: id
-  //   });
-  // };
+  //   })
+  // }
 
   // const handleToggleTodo = (id) => {
-  //   dispatchTodos({
-  //     type: "Toggle Todo",
-  //     payload: id
-  //   });
-  // };
 
-  // console.log(todos);
+  //   dispatchTodos({
+  //     type: 'Toggle Todo',
+  //     payload: id
+  //   })
+
+  // }
 
   return (
     <>
@@ -56,7 +65,7 @@ export const ToDos = () => {
           <ToDoAdd />
           <div>
             {todos.length == 0 ? (
-              <div></div>
+              <div>No hi ha res</div>
             ) : (
               <></>
             )}
