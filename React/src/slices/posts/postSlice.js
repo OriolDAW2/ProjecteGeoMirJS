@@ -10,7 +10,8 @@ const initialState = {
         latitude: 0,
         longitude: 0,
     },
-    page: 0,
+    page: 1,
+    pages: [],
     isLoading: false,
     likes: 0,
     liked: false,
@@ -46,8 +47,16 @@ export const postSlice = createSlice({
         setError: (state,action) => {
             state.error = action.payload
         },
+
+        setPage: (state,action) => {
+            state.page = action.payload
+        },
+        
+        setPages: (state,action) => {
+            state.pages = action.payload
+        }
     }
 });
 
-export const { startLoadingPosts, setPosts, setPost, setLikes, setLiked, setError } = postSlice.actions;
+export const { startLoadingPosts, setPosts, setPost, setLikes, setLiked, setError, setPage, setPages } = postSlice.actions;
 export default postSlice.reducer

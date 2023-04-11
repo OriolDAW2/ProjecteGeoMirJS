@@ -49,36 +49,6 @@ export const PostEdit = () => {
         visibility: post.visibility,
       })
     }, [post]) 
-  
-    // const editar = (e) => {
-    //     e.preventDefault();
-
-    //     // Enviam dades a l'aPI i recollim resultat
-    //     fetch ("https://backend.insjoaquimmir.cat/api/posts/"+id,{
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             //'Content-type': 'multipart/form-data',
-    //             'Authorization': 'Bearer ' + authToken 
-    //         },
-    //         method: "POST",
-    //         // body: JSON.stringify({ name,description,upload,latitude,longitude,visibility })
-    //         body: formData
-    
-    //       }
-    //     ).then( data => data.json() )
-    //     .then (resposta => { 
-    //       console.log(resposta); 
-    //       if (resposta.success == true ) {
-    //         console.log(authToken)
-    //         setAvis("Post modificat correctament")
-    //         //setAfegir(false); // Tornem al llistat
-    //         navigate("/posts/")
-    //       } else {
-    //         setError(resposta.message)
-    //       }
-    //     }
-    //   )    
-    // }
 
   return (
    
@@ -107,7 +77,6 @@ export const PostEdit = () => {
               <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-600">Imatge PNG, JPG or GIF (MAX. 800x400px)</label>
               <input name="upload" 
               onChange={ handleChange}
-              // value= { formulari.upload }
               className="form-control
               block
               w-full
