@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react';
-import { UserContext } from '../userContext';
+import { UserContext } from '../usercontext';
 import { delPost } from '../slices/posts/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 

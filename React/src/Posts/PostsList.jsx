@@ -1,20 +1,21 @@
-import React from "react";
-import { useContext, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../usercontext";
 
-import { UserContext } from "../userContext";
 import { PostList } from "./PostList";
+import { useFetch } from "../hooks/useFetch";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../slices/posts/thunks";
 
 export const PostsList = () => {
   const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-  const { posts = [], page=0, isLoading=true, error="" } = useSelector((state) => state.posts);
+  const { posts = [], page=0, isLoading=true, error="", filter } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPosts(0, authToken, email));
-  }, []);
+    dispatch(getPosts(authToken, email));
+  }, [filter]);
 
   return (
     <>
@@ -35,7 +36,9 @@ export const PostsList = () => {
                     >
                       Descripció
                     </th>
-                   
+                    {/* <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                Fitxer                
+              </th> */}
                     <th
                       scope="col"
                       className="text-sm font-medium text-gray-900 px-6 py-4 text-left"
@@ -89,7 +92,7 @@ export const PostsList = () => {
                   </tr>
                 </thead>
                 <tbody> 
-                  {isLoading ? "Espera..." : <> { posts.map((v) => {
+                  {isLoading ? "Espera..." : <>{posts.map((v) => {
                     return (
             
                       <>
@@ -98,6 +101,38 @@ export const PostsList = () => {
                       </>
                       )
                   })}</>}
+                  
+
+                  {/* <tr className="bg-white border-b">
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">1</td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                Mark
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                Otto
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                @mdo
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                Otto
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                @mdo
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                Otto
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                @mdo
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                @mdo
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              👁️📝🗑️
+              </td>
+            </tr> */}
                 </tbody>
               </table>
             </div>

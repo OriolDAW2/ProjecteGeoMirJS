@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom'
-import { UserContext } from '../../userContext';
+import { UserContext } from '../../usercontext';
 
 export const Header = () => {
 

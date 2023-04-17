@@ -1,4 +1,32 @@
-import { startLoadingPosts, setError, setPosts, setPost, setLikes, setLiked, setPages, setFilter } from "./postSlice";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: posts/thunks.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: posts/thunks.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { startLoadingPosts, setError, setPosts, setPost, setLikes, setLiked, setPages, setFilter } from "./postSlice";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -21,18 +49,18 @@ export const getPosts = (authToken, page = 0) => {
             method: "GET",
         };
         let url =  page > 0 ? 
-        "https://backend.insjoaquimmir.cat/api/posts?paginate=1&page=" + page 
+        "https://backend.insjoaquimmir.cat/api/posts?paginate=1&amp;page=" + page 
         : 
         "https://backend.insjoaquimmir.cat/api/posts" ;
 
-        let primsimbolo = page > 0 ? "&" : "?";
+        let primsimbolo = page > 0 ? "&amp;" : "?";
 
         let body = filter.body != "" ? "body="+filter.body : "";
         
         let author = filter.author != "" ? "author="+filter.author : "";
         
-        if (body != "" && author != ""){
-            url = url+primsimbolo+body+"&"+author;
+        if (body != "" &amp;&amp; author != ""){
+            url = url+primsimbolo+body+"&amp;"+author;
         }
 
         else if (author != ""){
@@ -104,7 +132,7 @@ export const addPost = (formulari, authToken) => {
  *
  * @param {string} id - The ID of the post to fetch.
  * @param {string} authToken - The authorization token required to access the API.
- * @returns {Promise<void>} A Promise that resolves when the post has been fetched and the state has been updated.
+ * @returns {Promise&lt;void>} A Promise that resolves when the post has been fetched and the state has been updated.
  */
 export const getPost = (id, authToken) => {
     return async (dispatch, getState) => {
@@ -141,7 +169,7 @@ export const getPost = (id, authToken) => {
  * @param {Object} formulari - The form data to be submitted for the post edit.
  * @param {string} authToken - The authorization token required to access the API.
  * @param {Object} post - The post object to be edited.
- * @returns {Promise<void>} A Promise that resolves when the post has been edited.
+ * @returns {Promise&lt;void>} A Promise that resolves when the post has been edited.
  */
 export const editPost = (formulari, authToken, post) => {
     return async (dispatch, getState) => {
@@ -181,7 +209,7 @@ export const editPost = (formulari, authToken, post) => {
  *
  * @param {Object} post - The post object to be deleted.
  * @param {string} authToken - The authorization token required to access the API.
- * @returns {Promise<void>} A Promise that resolves when the post has been deleted and the state has been updated.
+ * @returns {Promise&lt;void>} A Promise that resolves when the post has been deleted and the state has been updated.
  */
 export const delPost = (post, authToken) => {
     return async (dispatch, getState) => {
@@ -214,7 +242,7 @@ export const delPost = (post, authToken) => {
  *
  * @param {string} id - The ID of the post to test.
  * @param {string} authToken - The authentication token for the current user.
- * @returns {Promise<void>} - A Promise that resolves when the like state has been updated.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the like state has been updated.
  */
 export const testLikes = (id, authToken) => {
     return async (dispatch, getState) => {
@@ -261,7 +289,7 @@ export const testLikes = (id, authToken) => {
  * @param {string} id - The ID of the post to like.
  * @param {string} authToken - The authentication token for the current user.
  * @param {number} likes - The number of likes the post currently has.
- * @returns {Promise<void>} - A Promise that resolves when the like state has been updated.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the like state has been updated.
  */
 export const like = (id, authToken, likes) => {
     return async (dispatch, getState) => {
@@ -294,7 +322,7 @@ export const like = (id, authToken, likes) => {
  * @param {string} id - The ID of the post to unlike.
  * @param {string} authToken - The authentication token for the current user.
  * @param {number} likes - The number of likes the post currently has.
- * @returns {Promise<void>} - A Promise that resolves when the like state has been updated.
+ * @returns {Promise&lt;void>} - A Promise that resolves when the like state has been updated.
  */
 export const unlike = (id, authToken, likes) => {
     return async (dispatch, getState) => {
@@ -317,4 +345,26 @@ export const unlike = (id, authToken, likes) => {
             dispatch(setLikes(likes - 1));
         }
     };
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addComment">addComment</a></li><li><a href="global.html#addPost">addPost</a></li><li><a href="global.html#delComment">delComment</a></li><li><a href="global.html#delPost">delPost</a></li><li><a href="global.html#editPost">editPost</a></li><li><a href="global.html#getComments">getComments</a></li><li><a href="global.html#getPost">getPost</a></li><li><a href="global.html#getPosts">getPosts</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#like">like</a></li><li><a href="global.html#placeMarkSlice">placeMarkSlice</a></li><li><a href="global.html#testLikes">testLikes</a></li><li><a href="global.html#unlike">unlike</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Apr 14 2023 19:02:06 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

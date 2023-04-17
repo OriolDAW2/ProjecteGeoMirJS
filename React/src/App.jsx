@@ -4,7 +4,7 @@ import { LoginRegister } from './auth/LoginRegister'
 import { useState } from 'react'
 //import { createContext } from 'react'
 
-import { UserContext } from './userContext'
+import { UserContext } from './usercontext'
 import { Routes,Route } from 'react-router-dom'
 import { Header } from './components/layout/Header'
 import { Footer } from './components/layout/Footer'
@@ -40,14 +40,16 @@ function App() {
   
 
   let [usuari, setUsuari] = useState("");
-  let [ authToken,setAuthToken] = useState("");
+  let [authToken, setAuthToken] = useState("");
+  let [idUsuari, setIdUsuari] = useState("");
+
 
   
 
   return (
    <>
 
-    <UserContext.Provider value= { { usuari, setUsuari,authToken,setAuthToken }}>
+    <UserContext.Provider value= { { usuari, setUsuari,authToken,setAuthToken, idUsuari, setIdUsuari }}>
       
       { authToken ? (
       

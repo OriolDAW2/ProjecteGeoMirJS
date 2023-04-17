@@ -7,11 +7,13 @@ export const Paginate = ({}) => {
 
     return (
         <>
+            <ul className="py-5 flex flex-row">
             { pages.map ( (page)=> (
                 
                 <PaginateLink page={page}/>
                 
             ) ) }
+            </ul>
         </>
     )
 }

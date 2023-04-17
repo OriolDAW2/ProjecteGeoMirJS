@@ -2,14 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   comments: [],
-  page: 0,
+  page: 1,
+  pages: [],
   isLoading: false,
   add: true,
   error: "",
   commentsCount : 0
 }
 
- export const commentSlice = createSlice({
+export const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
@@ -32,9 +33,17 @@ const initialState = {
       
       setCommentsCount: (state,action) => {
         state.commentsCount = action.payload
+      },
+
+      setPage: (state,action) => {
+        state.page = action.payload
+      },
+    
+      setPages: (state,action) => {
+        state.pages = action.payload
       }
   }
 });
 
-export const { startLoadingComments, setComments, setAdd, setError, setCommentsCount } = commentSlice.actions;
+export const { startLoadingComments, setComments, setAdd, setError, setCommentsCount, setPages, setPage } = commentSlice.actions;
 export default commentSlice.reducer

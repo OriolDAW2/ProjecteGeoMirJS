@@ -3,7 +3,7 @@
   import { Comment } from "./Comment";
 
   import { useContext } from "react";
-  import { UserContext } from "../../userContext";
+  import { UserContext } from "../../usercontext";
 
   import { useState } from "react";
   import { CommentAdd } from "./CommentAdd";
@@ -17,13 +17,13 @@
 
   export const CommentsList = ({ id, comments_count }) => {
     const { usuari, email, setUsuari, authToken, setAuthToken } = useContext(UserContext);
-    const { comments = [], page=0, isLoading=true, add=true, error="", commentsCount=0 } = useSelector((state) => state.comments);
+    const { comments = [], page, isLoading=true, add=true, error="", commentsCount=0 } = useSelector((state) => state.comments);
     const dispatch = useDispatch();
 
     useEffect(() => {
       dispatch(setCommentsCount(comments_count))
-      dispatch(getComments(0, id, authToken, email));
-    }, []);
+      dispatch(getComments(page, id, authToken, email));
+    }, [page]);
 
     return (
       < >
@@ -58,8 +58,12 @@
             })
           ) : (
             <div>No hay comentarios</div>
+
           )
         )}
+
       </>
+      
     );
   };
+ 

@@ -16,6 +16,10 @@ const initialState = {
     likes: 0,
     liked: false,
     error: "",
+    filter: {
+        body: "",
+        author: "",
+    }
 }
 
 export const postSlice = createSlice({
@@ -54,9 +58,13 @@ export const postSlice = createSlice({
         
         setPages: (state,action) => {
             state.pages = action.payload
+        },
+
+        setFilter: (state, action) => {
+            state.filter = action.payload
         }
     }
 });
 
-export const { startLoadingPosts, setPosts, setPost, setLikes, setLiked, setError, setPage, setPages } = postSlice.actions;
+export const { startLoadingPosts, setPosts, setPost, setLikes, setLiked, setError, setPage, setPages, setFilter } = postSlice.actions;
 export default postSlice.reducer

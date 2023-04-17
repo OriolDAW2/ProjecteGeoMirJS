@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useContext } from "react";
-import { UserContext } from "../../userContext";
+import { UserContext } from "../../usercontext";
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, getComments } from "../../slices/comments/thunks";

@@ -5,6 +5,33 @@ const initialState = {
     isMarked: false
 }
 
+/**
+ * A Redux slice for managing place markers.
+ *
+ * @typedef {Object} PlaceMarkSlice
+ * @property {string} name - The name of the slice.
+ * @property {Object} initialState - The initial state of the slice.
+ * @property {Object} reducers - The reducers of the slice.
+ * @property {Function} reducers.addplacemark - Adds a place marker to the state.
+ * @property {Function} reducers.delplacemark - Deletes a place marker from the state.
+ * @property {Function} reducers.ismarked - Checks if a place marker is marked.
+ */
+
+/**
+ * The initial state of the slice.
+ *
+ * @typedef {Object} PlaceMarkState
+ * @property {boolean} isMarked - Indicates whether any place marker is marked.
+ * @property {Object[]} placeMarks - The place markers.
+ * @property {number} placeMarks[].id - The unique identifier of the place marker.
+ */
+
+/**
+ * The initial state of the slice.
+ *
+ * @type {PlaceMarkState}
+ */
+
 export const placeMarkSlice = createSlice({
 
     name: 'placeMarks',

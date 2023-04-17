@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { UserContext } from "../../userContext";
+import { UserContext } from "../../usercontext";
 import { CommentsContext } from "./commentsContext";
 
 import TimeAgo from "react-timeago";

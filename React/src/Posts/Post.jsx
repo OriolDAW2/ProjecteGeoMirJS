@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { UserContext } from "../userContext";
+import { UserContext } from "../usercontext";
 import { addpostmark, ismarked } from "../slices/postMarkSlice";
 import { CommentsList } from "./comments/CommentsList";
 import { getPost, like, unlike, delPost, editPost } from "../slices/posts/thunks";
@@ -130,7 +130,6 @@ export const Post = () => {
                     + 👍 {likes}
                   </a>
                 )}
-                
                 <CommentsList
                   id={post.id}
                   comments_count={post.comments_count}
